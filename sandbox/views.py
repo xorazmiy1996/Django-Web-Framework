@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from recipes.models import Recipes
+from sandbox.forms import FeedbackForm
 
 
 def index(request):
@@ -20,3 +21,14 @@ class RecipeDetailView(DetailView):
     model = Recipes
     template_name = "sandbox/recipe_detail.html"
     context_object_name = "recipe"
+def thank_you(request):
+    return HttpResponse("thank-you-url")
+def feedback(request):
+    if request.method == "POST":
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            return redirect("thank-you-url")
+    else:
+        form = FeedbackForm()
+    return render(request, "sandbox/feedback_form.html", {"form": form})

@@ -1373,6 +1373,263 @@ Keling, berilgan kodni batafsil tushuntirib beraman:
 
 > Ushbu kod parchasida `add_category` nomli `view` funksiyasi foydalanuvchidan kategoriya qo'shish uchun shaklni qabul qiladi. Agar foydalanuvchi shaklni to'ldirib yuborsa, ma'lumotlar saqlanadi va foydalanuvchi yana shaklni ko'rishi uchun yo'naltiriladi. Agar shakl to'ldirilmagan bo'lsa, bo'sh shakl ko'rsatiladi.
 
+### 73. Ushbu `add_category.html` fayli ichidagi `form` tegi ichidagi kode parchasini tushuntirib bering.
+
+`add_category.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Category</title>
+</head>
+<body>
+    <h1>Add a New Category</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Shaklni ko'rsatish -->
+        <button type="submit">Add Category</button>
+    </form>
+</body>
+</html>
+```
+
+**Formani Yaratish:**
+
+ ```html
+ <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Shaklni ko'rsatish -->
+    <button type="submit">Add Category</button>
+ </form>
+ ```
+ - `<form method="post">`: Bu forma ma'lumotlarni serverga yuborish uchun `POST` metodidan foydalanadi.
+ - `{% csrf_token %}`: Django'da `CSRF` (Cross-Site Request Forgery) himoyasi uchun token. Bu token forma yuborilganda xavfsizlikni ta'minlaydi.
+ - {{ form.as_p }}: `Django` da shaklni `HTML` formatida ko'rsatish uchun ishlatiladi. Bu yerda shakldagi barcha maydonlar `<p>` taglari ichida ko'rsatiladi. Agarda {{ form.as_div }} deb yozsak shakldagi barcha maydonlar `<div>` taglari ichida ko'rsatiladi.
+ - `<button type="submit">Add Category</button>`: Forma yuborish tugmasi. Foydalanuvchi bu tugmani bosganda forma ma'lumotlari serverga yuboriladi. 
+   
+### 74. Quyida ko'rsatilgan `class` `forms.Form` yoki `forms.ModelForm` meros olgandagi farqi
+
+```python
+from django import forms
+from .models import Category
+
+class CategoryForm(forms.ModelForm):
+    pass
+
+class CategoryForm(forms.Form):
+    pass
+    
+```
+`forms.Form` va `forms.ModelForm` o'rtasidagi farq quyidagilardir:
+
+`forms.Form`:
+- Bu oddiy `forma` yaratish uchun ishlatiladi.
+- Siz har bir maydonni qo'lda belgilashingiz kerak.
+- Ma'lumotlar bazasi bilan to'g'ridan-to'g'ri bog'lanmaydi.
+
+`forms.ModelForm`:
+- Bu Django modeliga asoslangan `forma` yaratish uchun ishlatiladi.
+- Model maydonlari avtomatik ravishda `forma` maydonlariga aylantiriladi.
+- Ma'lumotlar bazasi bilan bog'lanadi va ma'lumotlarni saqlashni osonlashtiradi.
+
+### 75. `forms.py` ichida ishlatiladigan `widget` nima uchun kerak?
+
+> `Widget` Django da forma maydonlarini qanday ko'rsatishni belgilash uchun ishlatiladi. Ular foydalanuvchilarga ma'lumotlarni kiritish jarayonini osonlashtiradi. Masalan, radio tugmalar, tanlovlar yoki matn maydonlari kabi turli xil widgetlar mavjud.
+
+`Widget` lar yordamida:
+
+- Forma maydonlarining ko'rinishini belgilashingiz mumkin.
+- Foydalanuvchilarga ma'lumotlarni kiritish uchun qulay interfeys taqdim etasiz.
+- Ma'lumotlarni to'g'ri formatda olishni ta'minlaysiz.
+
+### 76. Ushbu `forms.py` ichida ishlatilgan kode ichidagi `attrs` nima uchun kerak
+
+`forms.py`:
+```python
+name = forms.CharField(
+    widget=forms.TextInput(attrs={
+        'placeholder': 'Ismingizni kiriting',
+        'class': 'form-control',
+        'required': 'required'
+    })
+)
+```
+> `attrs` - bu `Django` formalarida widgetlar uchun qo'shimcha atributlar belgilash imkonini beruvchi parametrdir. U yordamida `HTML` elementlariga qo'shimcha xususiyatlar va uslublar qo'shishingiz mumkin. 
+
+Masalan, `attrs` yordamida quyidagi narsalarni belgilashingiz mumkin:
+
+- **Placeholder:** Maydon ichidagi ko'rsatma matni.
+- **Class:** `CSS` klasslari, uslub berish uchun.
+- **Style:** Inline uslublar.
+- **Required:** Maydonni majburiy qilish.
+
+Yuqoridagi kodeda:
+- `placeholder` foydalanuvchiga ko'rsatma beradi.
+- `class` CSS uslublarini qo'llash uchun ishlatiladi.
+- `required` maydonni majburiy qiladi.
+
+> Bundan tashqari widget yordamida input ichiga format yozsa ham bo'ladi:
+
+```python
+class ContactForm(forms.Form):
+    phone_number = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'placeholder': '+xx xxx xxx-xx-xx',
+            'pattern': r'^\+\d{2} \d{3} \d{3}-\d{2}-\d{2}$',
+            'title': 'Telefon raqami +xx xxx xxx-xx-xx formatida bo\'lishi kerak.'
+        })
+    )
+```
+- `pattern` atributi foydalanuvchi kiritgan raqamning formatini tekshiradi. Bu yerda `^\+\d{2} \d{3} \d{3}-\d{2}-\d{2}$` ifodasi `+xx xxx xxx-xx-xx` formatini belgilaydi.
+- `title` atributi foydalanuvchiga format haqida qo'shimcha ma'lumot beradi.
+
+### 77. `form.cleaned_data` bu nima uchun kerak.
+
+> `form.cleaned_data` Django da `forma` ma'lumotlarini tozalash va tekshirish jarayonida ishlatiladigan xususiyatdir. Bu xususiyat, foydalanuvchi kiritgan ma'lumotlarni tozalab, ularni ishlatishga tayyor holatga keltiradi. 
+
+Asosiy vazifalari:
+
+- `Tozalash`: Foydalanuvchi kiritgan ma'lumotlar, masalan, bo'sh joylar, noto'g'ri formatlar yoki boshqa xatolarni tozalash jarayonidan o'tadi.
+- `Tekshirish`: Formada belgilangan qoidalar asosida ma'lumotlar tekshiriladi. Agar ma'lumotlar to'g'ri bo'lsa, ular cleaned_data ga qo'shiladi.
+- `Oson foydalanish`: cleaned_data orqali tozalangan va tekshirilgan ma'lumotlarga oson kirish imkonini beradi.
+
+**Misol:**
+
+Quyidagi misolda `cleaned_data` qanday ishlatilishi ko'rsatilgan:
+
+`views.py`:
+
+```python
+class FeedbackForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    feedback = forms.CharField(widget=forms.Textarea)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email.endswith('@gmail.com'):
+            raise forms.ValidationError("Iltimos, Gmail manzilini kiriting.")
+        return email
+
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            # Tozalangan ma'lumotlarni olish
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            feedback = form.cleaned_data['feedback']
+            # Ma'lumotlarni saqlash yoki boshqa ishlar
+            return HttpResponse('Thank you for your feedback!')
+    else:
+        form = FeedbackForm()
+    return render(request, 'feedback_form.html', {'form': form})
+```
+Bu misolda:
+- `clean_email` metodi email maydonini tozalaydi va tekshiradi. Agar email `@gmail.com` bilan tugamasa, xato qaytaradi.
+- `form.cleaned_data` orqali tozalangan va tekshirilgan ma'lumotlar olinadi va ishlatiladi.
+
+#### 78. Menda savol bor, `78-savol` dagi `views.py` kode ichida `class FeedbackForm`  ichidagi `def clean_email` metodi qachon ishlaydi. Bu method `def feedback_view()` funksiyasida ishlatilmagan?
+
+> `def clean_email` metodi `class FeedbackForm` da avtomatik ravishda chaqiriladi, bu esa Django formalarining tozalash va tekshirish jarayonining bir qismidir. 
+
+**Qanday ishlaydi:**
+1. **Formani Tekshirish:** 
+    `def feedback_view` funksiyasida `form.is_valid()` chaqirilganda, Django avtomatik ravishda formadagi har bir maydon uchun `clean_<fieldname>` metodlarini chaqiradi. Bu yerda `<fieldname>` - bu maydon nomi, masalan, `email`.
+2. **Tozalash va Tekshirish:** 
+    `clean_email` metodi chaqirilganda, u `self.cleaned_data` dan `email` maydonining qiymatini oladi va uni tekshiradi. Agar tekshirish muvaffaqiyatli bo'lsa, tozalangan `email` qiymati qaytariladi. Agar xato bo'lsa, `ValidationError` ko'tariladi.
+3. **Natija:**
+    Agar `clean_email` metodi muvaffaqiyatli bajarilsa, tozalangan `email` qiymati `form.cleaned_data['email']` orqali olinadi. Agar xato yuz bersa,` form.is_valid()` `False` qaytaradi va forma xatolari ko'rsatiladi.
+
+**Misol:**
+
+`views.py`:    
+```python
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():  # Bu yerda clean_email chaqiriladi
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']  # Tozalangan email
+            feedback = form.cleaned_data['feedback']
+            return HttpResponse('Thank you for your feedback!')
+    else:
+        form = FeedbackForm()
+    return render(request, 'feedback_form.html', {'form': form})
+```
+> Shunday qilib, `clean_email` metodi `form.is_valid()` chaqirilganda avtomatik ravishda ishlaydi va foydalanuvchi kiritgan `email` ma'lumotini tekshiradi.
+
+**Qisqacha izoh:**
+
+- `form.is_valid()` funksiyasi chaqirilganda, Django avtomatik ravishda har bir maydon uchun `clean_<fieldname>` metodlarini, jumladan `clean_email` ni chaqiradi.
+- Agar `clean_email` metodida xato bo'lmasa (ya'ni, `ValidationError` ko'tarilmasa), tozalangan `email` qiymati `cleaned_data` ga qo'shiladi va `form.is_valid()` `True` qaytaradi.
+- Agar `clean_email` metodida xato yuz bersa (masalan, foydalanuvchi noto'g'ri `email` kiritgan bo'lsa), `ValidationError` ko'tariladi va `form.is_valid()` `False` qaytaradi.
+> Shunday qilib, `form.is_valid()` funksiyasi orqali forma ma'lumotlari to'g'riligini tekshirish jarayoni amalga oshiriladi. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

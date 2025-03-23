@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .forms import CategoryForm
 from .models import Category
@@ -18,7 +18,11 @@ def recipes(request, category_id):
 def add_category(request):
     if request.method == "POST":
         form = CategoryForm(request.POST)
-        return render(request, 'foodie_app/add_category.html')
+        if form.is_valid():
+            form.save()
+            return redirect("foodie_app:add-category-ulr")
+        else:
+            return render(request, 'foodie_app/add_category.html', {'form': form})
     else:
         form = CategoryForm()
         return render(request, 'foodie_app/add_category.html', {'form': form})
