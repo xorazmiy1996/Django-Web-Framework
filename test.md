@@ -1567,41 +1567,151 @@ def feedback_view(request):
 - Agar `clean_email` metodida xato bo'lmasa (ya'ni, `ValidationError` ko'tarilmasa), tozalangan `email` qiymati `cleaned_data` ga qo'shiladi va `form.is_valid()` `True` qaytaradi.
 - Agar `clean_email` metodida xato yuz bersa (masalan, foydalanuvchi noto'g'ri `email` kiritgan bo'lsa), `ValidationError` ko'tariladi va `form.is_valid()` `False` qaytaradi.
 > Shunday qilib, `form.is_valid()` funksiyasi orqali forma ma'lumotlari to'g'riligini tekshirish jarayoni amalga oshiriladi. 
+    
+### 79. Pastki qatordagi kode blockida `RecipeForm(request.POST or None, initial={"category": category})` nima uchun kerak, ushbu kode blockini batafsil tushuntiring.
+```python
+from foodie_app.forms import RecipeForm
+def add_recipe(request, category_id=None):
+    category = None
+    if category_id:
+        # category = Category.objects.get(id=category_id)
+        category = get_object_or_404(Category, id=category_id)
+        form = RecipeForm(request.POST or None, initial={"category": category})
+    else:
+        form = RecipeForm(request.POST or None)
+```
+1. **RecipeForm:**
+    - `RecipeForm` - bu Django da yaratilgan forma klassi. U foydalanuvchilardan retsept ma'lumotlarini olish uchun ishlatiladi. Bu forma, odatda, retsept nomi, ingredientlar, tayyorlash usuli va boshqa ma'lumotlarni o'z ichiga oladi.
+
+2. **request.POST:**
+    - `request.POST` - bu `HTTP` so'rovining `POST` ma'lumotlarini o'z ichiga oladi. Agar foydalanuvchi forma orqali ma'lumot yuborsa, bu ma'lumotlar request.POST orqali olinadi.
+    - Agar forma bo'sh bo'lsa (ya'ni, foydalanuvchi hali hech narsa yubormagan bo'lsa), `request.POST = {}` bo'sh bo'ladi.
+
+3. **or None:**
+    - `request.POST or None` - bu ifoda, agar `request.POST` bo'sh bo'lsa, `None` qiymatini beradi. Bu, forma yaratishda ma'lumotlar bo'lmasa, bo'sh forma yaratish imkonini beradi.
+
+4. `initial={"category": category}`:
+    - `initial` argumenti forma yaratishda boshlang'ich qiymatlarni belgilash uchun ishlatiladi. Bu yerda `initial` argumenti orqali `category` o'zgaruvchisi beriladi.
+    - Agar `category` o'zgaruvchisi mavjud bo'lsa (ya'ni, foydalanuvchi kategoriya tanlagan bo'lsa), forma ochilganda bu kategoriya avtomatik ravishda ko'rsatiladi. Bu foydalanuvchiga qaysi kategoriya ostida retsept qo'shayotganini ko'rsatadi.
+
+**Umumiy ishlash jarayoni:**
+
+- Agar foydalanuvchi forma orqali ma'lumot yuborsa, `request.POST` orqali bu ma'lumotlar olinadi va `RecipeForm` ga uzatiladi.
+- Agar foydalanuvchi hali hech narsa yubormagan bo'lsa, forma bo'sh holda yaratiladi.
+- Agar category berilgan bo'lsa, forma ochilganda bu kategoriya ko'rsatiladi.
+
+### 80. `form.save(commit=False)` ushbu kode nimani bidiradi va `commit = False` nima uchun kerak.
+
+> `form.save(commit=False)` Django da forma ma'lumotlarini saqlash uchun ishlatiladigan metoddir. Bu metod, forma ma'lumotlarini saqlash jarayonini boshqarish imkonini beradi. Keling, bu kodning ma'nosi va `commit=False` parametrining ahamiyatini ko'rib chiqaylik:
+
+1. `form.save()` metodi:
+    - `form.save()` metodi, forma ma'lumotlarini modelga saqlash uchun ishlatiladi. Agar siz `commit=True` (bu default qiymat) bo'lsa, forma ma'lumotlari darhol ma'lumotlar bazasiga saqlanadi.
+2. `commit=False`:
+    - `commit=False` parametri, forma ma'lumotlarini saqlashni kechiktirish imkonini beradi. Bu holatda, forma ma'lumotlari model ob'ekti sifatida yaratiladi, lekin u darhol ma'lumotlar bazasiga saqlanmaydi. Bu sizga ob'ektni o'zgartirish yoki qo'shimcha ma'lumotlar qo'shish imkonini beradi.
+
+3. **Misol**:
+    - Keling, `commit=False` ni qanday ishlatishni ko'rib chiqaylik:
+    ```python
+    if form.is_valid():
+    # Forma ma'lumotlarini model ob'ekti sifatida yarating
+    recipe = form.save(commit=False)
+    # Qo'shimcha ma'lumotlarni o'rnating
+    recipe.user = request.user  # Foydalanuvchini qo'shish
+    # Endi ob'ektni saqlang
+    recipe.save()
+    ```
+   - Bu misolda, `form.save(commit=False)` yordamida recipe ob'ekti yaratiladi, lekin u darhol saqlanmaydi. Keyin, foydalanuvchi ma'lumotlari qo'shiladi va oxirida `recipe.save()` yordamida ma'lumotlar bazasiga saqlanadi.
+
+**Xulosa**:
+
+> `form.save(commit=False)` yordamida siz forma ma'lumotlarini model ob'ekti sifatida yaratishingiz, lekin ularni darhol saqlamasligingiz mumkin. Bu sizga ob'ektni o'zgartirish yoki qo'shimcha ma'lumotlar qo'shish imkonini beradi. 
+
+> Ha, aytgancha Django da `form.save()` va `form.save(commit=True)` bir xil natijani beradi. 
+
+### 81. 
+
+```python
+def add_recipe(request, category_id=None):
+    category = None
+    if category_id:
+        # category = Category.objects.get(id=category_id)
+        category = get_object_or_404(Category, id=category_id)
+        form = RecipeForm(request.POST or None, initial={"category": category})
+    else:
+        form = RecipeForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        new_recipe = form.save(commit=True)
+        return redirect("foodie_app:recipes", category_id=new_recipe.category.id)
+
+    render(request, 'recipes/add_recipe.html', {'form': form, 'category': category})
+```
+Yuqoridagi kode ichidagi `form.is_valid()` qachon `True`, qachon `False` bo'ladi
 
 
+`Javob`:
 
+> `RecipeForm()` ichida `request.POST` ma'lumotlari kelmaguncha, `form.is_valid()` qiymati `False` bo'ladi. Keling, bu jarayonni yanada aniqroq ko'rib chiqaylik:
 
+- `request.POST`: Bu foydalanuvchi tomonidan yuborilgan forma ma'lumotlarini o'z ichiga oladi. Agar foydalanuvchi forma maydonlarini to'ldirib yubormasa, `request.POST` bo'sh bo'ladi.
+- `form.is_valid()`:
+    - Agar `request.POST` bo'sh bo'lsa, `form.is_valid()` `False` qaytaradi, chunki forma ma'lumotlari mavjud emas.
+    - Agar foydalanuvchi forma maydonlarini to'ldirsa va yuborsa, `form.is_valid()` `True` qaytaradi, agar barcha maydonlar to'g'ri to'ldirilgan bo'lsa.
 
+**Misol:**
 
+```python
+form = RecipeForm(request.POST or None, initial={"category": category})
+if form.is_valid():
+    form.save()
+```
 
+- Agar foydalanuvchi forma maydonlarini to'ldirmasa, `request.POST` bo'sh bo'ladi va `form.is_valid()` `False` qaytaradi.
+- Agar foydalanuvchi forma maydonlarini to'ldirib yuborsa va barcha talablar bajarilsa, `form.is_valid()` `True` qaytaradi va ma'lumotlar saqlanadi.
 
+###  82. `form = RecipeForm(request.POST or None, initial={"category": category})` ushbu code da `request.POST` orqali ma'lumot kelsa `initial` nima bo'ladi.
 
+> `initial` argumenti faqat foydalanuvchi forma yubormagan bo'lsa (ya'ni, `request.POST` bo'sh bo'lsa) ko'rsatiladi. Agar forma yuborilgan bo'lsa, `initial` qiymati e'tiborga olinmaydi va foydalanuvchi kiritgan ma'lumotlar asosida forma to'ldiriladi.
 
+> Keling, `initial` argumentining qanday ishlashini va `request.POST` orqali ma'lumotlar yuborilganda qanday natijalar kelishini batafsil misollar bilan ko'rib chiqamiz.
 
+**Misol:** 
+1. **Foydalanuvchi Forma Yubormagan**
+    >Foydalanuvchi hali forma ma'lumotlarini to'ldirmagan va submit tugmasini bosmagan holat:
 
+    ```python
+    # Kategoriya obyekti
+    category = Category.objects.get(id=1)  # Masalan, "Pizza" kategoriyasi
+    
+    # Forma yaratish
+    form = RecipeForm(request.POST or None, initial={"category": category})
+    ```
+   - `request.POST`: Bu holda `request.POST` bo'sh bo'ladi, chunki foydalanuvchi hali forma yubormagan.
+   - `initial: initial={"category": category}` argumenti ishlaydi va category qiymati forma maydonida ko'rsatiladi. Foydalanuvchi `Pizza` kategoriyasini ko'radi, lekin hali hech qanday ma'lumot kiritmagan.
 
+2.  **Foydalanuvchi Forma Yuborgan**
 
+    > Foydalanuvchi forma ma'lumotlarini to'ldirib, `submit` tugmasini bosgan holat:
 
+    ```python
+    # Foydalanuvchi forma ma'lumotlarini yuboradi
+    request.POST = {
+        'name': 'New Pizza',
+        'description': 'Delicious cheese pizza',
+        'category': 1  # "Pizza" kategoriyasi ID
+    }
+    
+    # Forma yaratish
+    form = RecipeForm(request.POST or None, initial={"category": category})
+    ```
+    - `request.POST`: Bu holda `request.POST` to'ldirilgan bo'ladi, chunki foydalanuvchi forma ma'lumotlarini yuborgan.
+    - `initial`: initial argumenti e'tiborga olinmaydi. Foydalanuvchi kiritgan ma'lumotlar asosida forma to'ldiriladi. Ya'ni, form obyekti `name`, `description`, va `category` maydonlari bilan to'ldiriladi.
 
+**Xulosa**
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- `initial` argumenti faqat foydalanuvchi forma yubormagan bo'lsa ko'rsatiladi.
+- Agar foydalanuvchi forma yuborsa, `request.POST` orqali kiritilgan ma'lumotlar asosida forma to'ldiriladi va `initial` qiymati e'tiborga olinmaydi.
+    
 
 
 

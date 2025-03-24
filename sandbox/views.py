@@ -32,3 +32,4 @@ def feedback(request):
     else:
         form = FeedbackForm()
     return render(request, "sandbox/feedback_form.html", {"form": form})
+

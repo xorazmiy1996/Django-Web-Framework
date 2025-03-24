@@ -2,6 +2,7 @@
 from django import forms
 
 from foodie_app.models import Category
+from recipes.models import Recipes
 
 
 class CategoryForm(forms.ModelForm):
@@ -12,4 +13,9 @@ class CategoryForm(forms.ModelForm):
             "name": "Category name",
         }
 
+
+class RecipeForm(forms.ModelForm):
+    class Meta:
+        model = Recipes
+        fields = ['name', 'description', 'ingredients', 'directions', 'category']
 
