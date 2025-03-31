@@ -497,6 +497,11 @@ Agar `shop` ilovasidagi `index` `URL` ni chaqirmoqchi bo'lsangiz, siz quyidagich
 # templates/shop/index.html
 <a href="{% url 'shop:index' %}">Do'kon Bosh Sahifasi</a>
 ```
+> `{% url 'shop:index' %}` ushbu sintaksisni yozganda etiborli bo'ling `'shop:index'` ichida  ortiqcha probel bo'lmasligi kerak aks holda quydagi hatolik bo'lishi mumkin:
+```html
+Exception Value:	
+Reverse for 'index ' not found. 'index ' is not a valid view function or pattern name.
+```
 
 ### 40. `Django` da `Shablonlar(templates)` katalogini loyiha darajasida qayta tashkil etish?
 
@@ -1712,38 +1717,901 @@ if form.is_valid():
 - `initial` argumenti faqat foydalanuvchi forma yubormagan bo'lsa ko'rsatiladi.
 - Agar foydalanuvchi forma yuborsa, `request.POST` orqali kiritilgan ma'lumotlar asosida forma to'ldiriladi va `initial` qiymati e'tiborga olinmaydi.
     
+### 83. `forma` ichiga `None` yuborishdan maqsad nima:`form = RecipeForm(request.POST or None, initial={"category": category})`
+
+> `None` qiymatini forma ichiga yuborishning maqsadi, agar foydalanuvchi formani yubormagan bo'lsa, formani yaratishda hech qanday ma'lumotni ko'rsatmaslikdir. 
+
+**Bu quyidagi sabablarga ko'ra muhim:**
+
+- `Bo'sh forma yaratish`: Agar foydalanuvchi hali formani yubormagan bo'lsa, `None` qiymati yordamida bo'sh forma yaratish mumkin. Bu foydalanuvchiga yangi forma ko'rsatadi va u ma'lumotlarni kiritishi mumkin.
+- `Xatoliklarni oldini olish`: Agar `request.POST` bo'sh bo'lsa va siz uni to'g'ridan-to'g'ri forma ichiga yuborsangiz, bu xatoliklar yoki noto'g'ri ishlashga olib kelishi mumkin. `None` yordamida siz formani to'g'ri boshqarishingiz mumkin.
+- `Boshlang'ich qiymatlar`: `initial` argumenti yordamida siz formaning boshlang'ich qiymatlarini belgilashingiz mumkin. `None` bilan birga, forma bo'sh bo'lib qoladi va foydalanuvchi ma'lumotlarni kiritishi uchun tayyor bo'ladi.
+
+> Umuman olganda, `None` qiymatini yuborish, foydalanuvchi formani yubormaganida to'g'ri va qulay forma yaratishga yordam beradi. Bu sizga foydalanuvchi tajribasini yaxshilash imkonini beradi.
+
+### 84. `Django` da widgetlar nima uchun kerak?
+
+> `Django` da `widget` lar - bu `HTML` forma maydonlarini yaratish va ko'rsatish uchun ishlatiladigan komponentlardir. Ular `Django` formalarida foydalanuvchi interfeysini yaxshilash va moslashtirish imkonini beradi. 
+
+**Asosiy jihatlari:**
+
+- Turli xil `widget` lar: Django'da turli xil widgetlar mavjud, masalan:
+    - `TextInput`: oddiy matn maydoni.
+    - `Textarea`: ko'p qatorli matn maydoni.
+    - `Select`: tanlov maydoni (dropdown)
+
+- `Meta sinfi`: Formaning `Meta sinfi` orqali model va maydonlar ko'rsatiladi. Bu yerda `widget` larni belgilash uchun `widgets` lug'ati ishlatiladi.
+- `HTML` atributlari: Widgetlar yordamida HTML atributlarini, masalan, `placeholder`, `class`, `value`, va `disabled` kabi xususiyatlarni qo'shish mumkin.
+
+**Misol**:
+
+> Agar siz `TextInput` widgetini yaratmoqchi bo'lsangiz, quyidagi kodni ko'rib chiqing:
+
+```python
+from django import forms
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Category Name', 'class': 'form-control'}),
+        }
+```
+
+> Bu misolda, `name` maydoni uchun `TextInput` widgeti yaratilgan va `placeholder` va `class` atributlari qo'shilgan.
+
+### 85. `attribular` deb nimaga aytiladi?
+
+> `Atributlar` - bu `HTML` elementlariga qo'shiladigan xususiyatlardir. Ular elementning ko'rinishi, xatti-harakatlari va boshqa xususiyatlarini belgilash uchun ishlatiladi. Django'da `widget` lar yordamida `HTML` atributlarini qo'shish mumkin.
+
+**Misollar:**
+
+- `placeholder`: Maydon ichida ko'rsatma beruvchi matn.
+- `class`: `CSS` uslublarini qo'llash uchun ishlatiladigan sinf nomi.
+- `value`: Maydonning boshlang'ich qiymati.
+- `disabled`: Maydonni o'zgartirishni taqiqlovchi atribut.
+- `rows`: `HTML` da ko'p qatorli matn maydoni `(<textarea>)` uchun ishlatiladi. Bu atribut maydonning balandligini belgilaydi va foydalanuvchiga ko'rsatiladigan qatorlar sonini aniqlaydi.
+    - `<textarea name="description" rows="5" placeholder="Enter your description here..."></textarea>`
+    - Bu misolda, `rows="5"` atributi `textarea` maydonining balandligini 5 qatorga teng qiladi. Foydalanuvchi 5 qatorli maydonda matn kiritishi mumkin.
+
+### 86. `Django` da Foydalanuvchini ro'yxatga olish komponentini yaratish.
+
+> Foydalanuvchini ro'yxatga olish komponentini yaratish uchun `Django` da quyidagi asosiy qadamlarni bajarishingiz kerak:
+
+1. **App yaratish:** Django'da yangi `app` yaratish uchun quyidagi buyruqni bajarishingiz mumkin:
+    
+   `python manage.py startapp accounts`
+
+2. **URL larni sozlash:** `accounts/urls.py` faylini yaratib, quyidagi kodni qo'shing:
+
+    ```python
+    from django.urls import path
+    from .views import register
+    
+    urlpatterns = [
+        path('register/', register, name='register'),
+   
+        path('', include("django.contrib.auth.urls")), # djangoning standart url ga o'tish uchun
+    ]
+    ```
+
+3. **View yaratish:** `accounts/views.py` faylida ro'yxatga olish funksiyasini yozing:
+
+    ```python
+    from django.shortcuts import render, redirect
+    from django.contrib.auth.forms import UserCreationForm
+    from django.contrib.auth import login
+    
+    def register(request):
+        if request.method == 'POST':
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                return redirect('home')  # 'home' - bu sizning asosiy sahifangiz
+        else:
+            form = UserCreationForm()
+        return render(request, 'registration/register.html', {'form': form})
+    ```
+
+4. **Shablon yaratish:** `accounts/templates/accounts/register.html` faylini yaratib, quyidagi kodni qo'shing:
+
+    ```html
+    <h2>Ro'yxatdan o'tish</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Ro'yxatdan o'tish</button>
+    </form>
+    ```
+
+5. `URL` larni asosiy faylga qo'shish: `urls.p`y faylida `accounts.urls` ni qo'shing:
+
+    ```python
+    from django.urls import include, path
+    
+    urlpatterns = [
+        path('accounts/', include('accounts.urls')),
+        # boshqa URL'lar
+    ]
+    ```
+> Yuqoridagi qadamlar foydalanuvchini ro'yxatga olish komponentini yaratish uchun asosiy yo'lni ko'rsatadi.
+
+### 87. Django da ro'yhatdan o'tishda `form = UserCreationForm(data=request.POST)` nima uchun kerak.
+
+> **UserCreationForm:** Bu `Django` da foydalanuvchi yaratish uchun tayyorlangan forma. U foydalanuvchi `nomi`, `parol` va parolni tasdiqlash kabi maydonlarni o'z ichiga oladi. U `django.contrib.auth.forms` modulidan olinadi. 
+
+### 88. 
+1. `Django` da Avtorizatsiya
+
+- `Django`, foydalanuvchilarni boshqarish uchun kuchli avtorizatsiya tizimiga ega. Foydalanuvchilar ro'yxatdan o'tgandan so'ng, ularni tizimga kirishlari uchun avtorizatsiya qilish zarur.
+-  `login` funksiyasi:
+    - **Import qilish:** `from django.contrib.auth import login` qatori, `Django` dan `login` funksiyasini `import` qiladi. Bu funksiya foydalanuvchini tizimga kirish jarayonida ishlatiladi.
+    - **Funksiya chaqiruvi:** `login(request, user)` qatori, foydalanuvchini tizimga kirish jarayonida chaqiriladi.
+
+- **Qanday ishlaydi?**
+    - **Tizimga kirish:** `login` funksiyasi chaqirilganda, foydalanuvchi tizimga kiradi. Bu jarayon quyidagi bosqichlarni o'z ichiga oladi
+    - Foydalanuvchi ma'lumotlari (masalan, foydalanuvchi nomi va parol) to'g'ri bo'lsa, user obyekti yaratiladi.
+    - `login` funksiyasi chaqirilganda, foydalanuvchining sessiyasi yaratiladi. Bu, foydalanuvchini tizimda avtorizatsiya qilishni anglatadi.
+    - Foydalanuvchi keyingi so'rovlarida, tizim uni tanib oladi va uning ma'lumotlariga kirish imkoniyatini beradi.
+
+
+### 89. `logout` qilish uchun nima qilish kerak?
+
+    > `Django` da foydalanuvchini tizimdan chiqish `(logout)` qilish uchun bir necha qadamlarni bajarish kerak. Quyida bu jarayonni qanday amalga oshirishni ko'rsataman:
+
+1. `URL` ni sozlash
+    > Avvalo, `urls.py` faylida logout `URL` ni qo'shishingiz kerak. Django'da logout uchun standart `auth_views.LogoutView.as_view()` chiqish class  mavjud:
+    
+    `urls.py`:
+
+    ```python
+    from django.urls import path
+    from django.contrib.auth import views as auth_views
+    
+    urlpatterns = [
+        # Boshqa URL lar...
+        path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    ]
+    ```
+
+2. HTML da `logout` formasi
+    > `HTML` faylida foydalanuvchini chiqish uchun forma yaratishingiz kerak. Bu forma `CSRF` token va `POST` metodini o'z ichiga olishi kerak:
+
+    ```python
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Chiqish</button>
+    </form>
+    ```
+3. `Redirect` `URL` ni sozlash
+
+    > Foydalanuvchi chiqib ketgandan so'ng qayerga yo'naltirilishini belgilash uchun `settings.py` faylida `LOGOUT_REDIRECT_URL` ni qo'shishingiz mumkin:
+
+    `LOGOUT_REDIRECT_URL = '/'`
+    
+    > Bu yerda / - foydalanuvchi chiqib ketgandan so'ng yo'naltiriladigan sahifa. 
+
+4. `Logout` funksiyasini chaqirish
+    > Endi foydalanuvchi chiqish tugmasini bosganda, `Django` avtomatik ravishda foydalanuvchini tizimdan chiqaradi va belgilangan `URL` ga yo'naltiradi.
+
+Misol
+
+Umumiy ko'rinish:
+
+```python
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Chiqish</button>
+    </form>
+{% endif %}
+```
+
+### 90. `Djangoda` login page ni yasash uchun nima qilish kerak?
+
+1. **Login Shablonini Yaratish:**
+    - `accounts` papkasida `login.html` faylini yarating.
+    - Ushbu faylda `HTML` formasi bo'lishi kerak, unda foydalanuvchi `username` va `parol` maydonlari bo'ladi. Formaning `action` atributini `login` `URL` siga yo'naltiring va `method` sifatida `POST` ni belgilang.
+
+        ```html
+        {% extends "base.html" %}
+        
+        {% block content %}
+            <h2>Login</h2>
+            <form action="{% url 'accounts:login' %}" method="POST">
+                {% csrf_token %}
+                <div>
+                    <label for="username">Foydalanuvchi ismi:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div>
+                    <label for="password">Parol:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Kirish</button>
+            </form>
+        
+        {% endblock content %}
+        ```  
+
+   Tushuntirish:
+    
+    - `action="{% url 'login' %}"`: Bu yerda login `URL` siga yo'naltirish uchun `Django` templating tilidan foydalaniladi.
+    - `method="POST"`: Bu forma ma'lumotlarini serverga yuborish uchun `POST` metodidan foydalanadi.
+    - `{% csrf_token %}`: Bu xavfsizlik uchun zarur bo'lgan `CSRF` tokenini qo'shadi.
+        
+
+2. `URL` larni Sozlash:
+    - `urls.py` faylida login `URL` sini qo'shing. Masalan:
+        `path('login/', views.login_view, name='login')`
+
+3. `Login` Ko'rinishini Yaratish:
+
+   - `views.py` faylida `login` qilish uchun ko'rinish `(view)` yarating. `Django` da `authenticate` va `login` funksiyalaridan foydalaning:
+       ```python
+       def login_view(request):
+           if request.method == 'POST':
+               username = request.POST.get('username')
+               password = request.POST.get('password')
+    
+               if username and password:
+                   user = authenticate(request, username=username, password=password)
+                   if user is not None:
+                       login(request, user)
+                       return redirect('foodie_app:index')  # O'zgaritiring
+                   else:
+                       # Foydalanuvchi topilmadi
+                       return render(request, 'accounts/login.html', {'error': 'Foydalanuvchi ismi yoki parol noto\'g\'ri.'})
+               else:
+                   return render(request, 'accounts/login.html',
+                                 {'error': 'Iltimos, foydalanuvchi ismini va parolni kiriting.'})
+    
+           return render(request, 'accounts/login.html')
+       ```
+
+       - `authenticate` funksiyasi Django'da foydalanuvchini tekshirish uchun ishlatiladi. U quyidagi maqsadlar uchun kerak:
+           - **Foydalanuvchini Tekshirish:** `authenticate` funksiyasi foydalanuvchi kiritgan `ismi` va `parolini` qabul qiladi va ularni ma'lumotlar bazasidagi foydalanuvchi ma'lumotlari bilan solishtiradi. Agar kiritilgan ma'lumotlar to'g'ri bo'lsa, u foydalanuvchi ob'ektini qaytaradi, aks holda None qaytaradi.
+           - **Xavfsizlik:** Bu funksiya foydalanuvchi ma'lumotlarini xavfsiz tarzda tekshirish imkonini beradi, shuningdek, parolni ochiq ko'rinishda saqlashdan saqlaydi.
+    
+
+### 91. `MultiValueDictKeyError` bu qanday hato.
+
+> `MultiValueDictKeyError` xatosi, odatda, `Django` da forma ma'lumotlarini olishda kutilgan kalit (masalan, `username`) mavjud bo'lmaganda yuzaga keladi. Bu xato ko'pincha foydalanuvchi forma maydonlarini to'ldirmaganida yoki forma ma'lumotlari to'g'ri yuborilmaganida paydo bo'ladi.
+
+### 92. `Django` loyihasiga `bootstrap` kutubxonasini o'rnatish va ishlatish:
+
+`O'rnatish`: `pip install django-bootstrap5`
+
+**Django Loyihasida Foydalanish:**
+
+1. `settings.py` faylida:
+   `INSTALLED_APPS` ro'yxatiga bootstrap5 ni qo'shing:
+    ```python
+    INSTALLED_APPS = [
+        ...
+        'bootstrap5',
+    ]
+    ```
+2. `Template` faylida:
+    `Bootstrap 5` kutubxonasini qo'shish uchun, `base.html` faylining eng boshiga quyidagi kodni yozing:
+
+    `{% load bootstrap5 %}`
+
+3. Formani yaratish:
+    ```html
+    <form method="post" action="{% url 'your_view_name' %}">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button class="btn btn-outline-success"  type="submit">Save Recipe1</button>
+    </form>
+    ```
+   > Yuqoridagi formada  `form.as_div` bootstrab style ishlashi uchun bootstrab `class` larini `widget` lar orqali `forms.py` da berish kerak. Quydagicha:
+    
+    ```python
+    class RecipeForm(forms.ModelForm):
+        class Meta:
+            model = Recipes
+            fields = ['name', 'description', 'ingredients', 'directions', 'category']
+            widgets = {
+                'name': forms.TextInput(attrs={'class': 'form-control'}),
+                'description': forms.Textarea(attrs={'class': 'form-control'}),
+                'ingredients': forms.Textarea(attrs={'class': 'form-control'}),
+                'directions': forms.Textarea(attrs={'class': 'form-control'}),
+                'category': forms.Select(attrs={'class': 'form-select'}),
+    
+            }
+    ```
+   > Yuqoridagi kodda `name` fieldiga bootstrap sytle ni berish uchun `widgets => attrs => 'class'` ichida bootstrap `class` larini berish kerak. Misol ucun `'class': 'form-control'`
+
+### 93. Veb ilovasida `flash` xabarlarning maqsadi nima?
+
+> `Flash` xabarlari `(flash messages)` veb ilovalarida foydalanuvchilarga ma'lum harakatlar yoki voqealar natijasida tezda ko'rsatadigan, vaqtinchalik xabarlardir.
+
+> `Flash` xabarlar foydalanuvchilarga amalga oshirilgan harakatlar (masalan, `forma` jo'natish, muvaffaqiyatli registratsiya yoki xato yuz berdi) haqida tezkor va aniq fikr beradi.
+
+> `Flash` xabarlar dasturchilar tomonidan ko'pincha foydalanuvchi tajribasini yaxshilash, muloqotlarni soddalashtirish va foydalanuvchilarni harakatlari haqida xabardor qilish maqsadida ishlatiladi. Ular foydalanuvchilarni yo'naltirishda va eng muhimi, `ilova` bilan aloqada aql-idrokni oshirishda yordam beradi.
+
+### 94. Django da `User` va `User Profil` tushunchasi haqida ma'lumot bering.
+
+`User`:
+
+- `User` modeli Django tomonidan taqdim etilgan standart foydalanuvchi modelidir.
+- U foydalanuvchilarni `autentifikatsiya` qilish uchun kerakli asosiy ma'lumotlarni saqlaydi, masalan:
+    - `username`: Foydalanuvchi nomi.
+    - `password`: Foydalanuvchi paroli.
+    - `email`: Foydalanuvchining elektron pochta manzili.
+    - `first name` va `last name`: Foydalanuvchining ismi va familiyasi.
+
+`User Profile`:
+
+- `User Profile` - bu foydalanuvchi haqidagi qo'shimcha ma'lumotlarni saqlash uchun yaratilgan alohida modeldir.
+- U `User` modelidan meros oladi va `1:1` munosabatda bo'ladi, ya'ni har bir foydalanuvchiga bitta profil mos keladi.
+- Profilga qo'shimcha maydonlar qo'shish mumkin, masalan:
+    - `bio`: Foydalanuvchining qisqacha ma'lumotlari.
+    - `profile photo`: Foydalanuvchining profil rasmi.
+    - `date created`: Profil yaratilgan sana.
+
+Misol:
+
+> Agar siz foydalanuvchi haqidagi qo'shimcha ma'lumotlarni saqlamoqchi bo'lsangiz, User Profile modelini yaratishingiz mumkin. Bu orqali siz foydalanuvchi haqidagi ma'lumotlarni yanada kengaytirishingiz mumkin.
+
+### 95. Django da Foydalanuvchi profili(UserProfil) qanday yaratiladi?
+
+Foydalanuvchi profili yaratish jarayoni quyidagi bosqichlardan iborat:
+
+1. **Foydalanuvchi Ro'yxatdan O'tishi:** Foydalanuvchi yangi hisob yaratish uchun ro'yxatdan o'tadi. Bu jarayonda foydalanuvchi `ismi`, `parol` va boshqa ma'lumotlarni kiritadi.
+2. `Signal` **Yaratish:** Django da `signal` deb ataladigan mexanizm mavjud. Foydalanuvchi ro'yxatdan o'tganda, bu `signal` avtomatik ravishda ishga tushadi. `Signal`, yangi foydalanuvchi yaratildi degan xabarni yuboradi.
+3. **Foydalanuvchi Profilini Yaratish:** `Signal` qabul qilganda, tizim foydalanuvchi `profili` yaratish funksiyasini chaqiradi. Bu funksiya yangi foydalanuvchi ma'lumotlarini (masalan, `ismi`, `fotosurati`, `biografiyasi`) o'z ichiga olgan `profilni` yaratadi.
+4. **Ma'lumotlarni Saqlash:** Yaratilgan foydalanuvchi `profili` ma'lumotlar bazasida saqlanadi, shunda foydalanuvchi keyinchalik o'z `profili` ni ko'rishi va tahrirlashi mumkin.
+
+> Bu jarayon foydalanuvchi ro'yxatdan o'tganda avtomatik ravishda amalga oshiriladi, shuning uchun foydalanuvchi o'z profilini qo'lda yaratishi shart emas.
+
+### 96. Foydalanuvchi profili yaratishda qanday `signal` ishlatiladi?
+
+> Foydalanuvchi profili yaratishda Django da `post_save` `signali` ishlatiladi. Bu `signal` foydalanuvchi obyekti saqlanganda (ya'ni, yangi foydalanuvchi ro'yxatdan o'tganda yoki mavjud foydalanuvchi ma'lumotlari yangilanganda) ishga tushadi. 
+
+`post_save` `signali` ning ishlash jarayoni quyidagicha:
+1. **Signalni Import Qilish:** Django'da `post_save` signalini import qilasiz. Bu signal `django.db.models.signals` modulida mavjud.
+2. **Signalni Qabul Qilish:** Signalni qabul qilish uchun funksiya yozasiz. Bu funksiya foydalanuvchi obyekti saqlanganda chaqiriladi va foydalanuvchi profili yaratish jarayonini bajaradi.
+3. **Signalni Ro'yxatdan O'tkazish:** Yozilgan funksiyani `post_save` signaliga bog'laysiz. Bu bog'lanish foydalanuvchi modeli saqlanganda avtomatik ravishda chaqiriladi.
+
+**Misol uchun:**
+
+```python
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import UserProfile, User
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+```
+
+> Bu kodda, agar yangi foydalanuvchi yaratilsa (`created` o'zgaruvchisi `True` bo'lsa), `UserProfile` modeli orqali yangi foydalanuvchi profili yaratiladi.
+> Yuqoridagi kodda `instance` o'zgaruvchisi Django da `signal` funksiyalarida foydalanuvchi obyekti haqida ma'lumot saqlaydi. Bu o'zgaruvchining ahamiyati quyidagilardan iborat:
+
+1. **Yangi Foydalanuvchini Anglash:** `instance` o'zgaruvchisi, `signal` chaqirilganda yaratilgan yoki yangilangan foydalanuvchi obyekti haqida ma'lumot beradi. Bu orqali siz qaysi foydalanuvchi bilan ishlayotganingizni bilasiz.
+2. **Ma'lumotlarga Kirish:** `instance` yordamida foydalanuvchi obyekti bilan bog'liq barcha ma'lumotlarga (masalan, foydalanuvchi `ismi`, `email` `manzili` va boshqa maydonlar) kirishingiz mumkin. Bu ma'lumotlar foydalanuvchi profilini yaratishda yoki yangilashda kerak bo'ladi.
+3. **O'zgarishlarni Qayta Ishlash:** Agar foydalanuvchi ma'lumotlari yangilansa, `instance` o'zgaruvchisi yangilangan ma'lumotlarni o'z ichiga oladi. Bu orqali siz foydalanuvchi profilini yangilash jarayonini boshqarishingiz mumkin.
+
+### 97. `Pillow` nima uchun kerak.
+
+> `Pillow` — bu Python dasturlash tilida tasvirlar bilan ishlash uchun mo'ljallangan kutubxona. Django'da foydalanuvchi `profili` uchun tasvirlar (masalan, profil fotosuratlari) qo'shish zarur bo'lganda, Pillow kutubxonasi quyidagi maqsadlar uchun ishlatiladi:
+
+1. **Tasvirlarni O'qish va Yozish:** `Pillow` yordamida turli formatdagi tasvirlarni (`JPEG`, `PNG`, `GIF` va boshqalar) o'qish va yozish mumkin. Bu foydalanuvchi yuklagan fotosuratlarni saqlashda muhimdir.
+2. **Tasvirlarni O'zgartirish:** `Pillow` tasvirlarni o'zgartirish, masalan, o'lchamlarini o'zgartirish, kesish, aylantirish va filtrlar qo'llash imkonini beradi. Bu foydalanuvchi yuklagan fotosuratlarni kerakli formatga keltirishda foydalidir.
+3. `Tasvirlarni Tekshirish:` Foydalanuvchi yuklagan tasvirlarning formatini va sifatini tekshirish uchun `Pillow` dan foydalanish mumkin. Bu, masalan, noto'g'ri formatdagi tasvirlarni qabul qilmaslik uchun zarur.
+
+> Django da `Pillow` kutubxonasini o'rnatish uchun quyidagi buyruqni bajarish kerak: `pip install Pillow`
+
+### 98. Ushbu foydalanuvchi UserPfofilini yangilashda ishlatiladigan kodeni analiz qilib bering.
+
+`views.py`:
+
+```python
+    if request.method == "POST":
+        form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Muvoffaqiyatli!")
+    else:
+        form = UserProfileForm(instance=request.user.profile)
+    return render(request, "accounts/edit_profile.html", {"form": form})```
+```
+
+> Bu funktsiya foydalanuvchi profilini tahrirlash uchun ishlatiladi.
+
+**Parametr:** request
+    - `HTTP` so'rovini ifodalaydi, bu foydalanuvchidan kelgan ma'lumotlarni o'z ichiga oladi.
+
+**Shart:** `if request.method == "POST":`
+    - Agar so'rov `POST` usuli bilan yuborilgan bo'lsa, bu shart bajariladi. Bu, odatda, foydalanuvchi formani yuborganini anglatadi.
+
+**Formani yaratish:**
+    ```python
+    form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user.profile)
+    ```
+    
+
+  - `UserProfileForm` - bu foydalanuvchi profilini tahrirlash uchun mo'ljallangan `forma`.
+  - `data=request.POST` - foydalanuvchidan kelgan ma'lumotlar.
+  - `files=request.FILES` - foydalanuvchi yuklagan fayllar (masalan, profil rasmi).
+  - `instance=request.user.profile` - tahrirlanayotgan foydalanuvchi profilini ko'rsatadi.
+
+**Formani tekshirish:** `if form.is_valid()`:  
+
+ - Agar `forma` to'g'ri bo'lsa, quyidagi kod bajariladi.
+
+**Formani saqlash:** `form.save()`
+
+- Foydalanuvchi profilidagi o'zgarishlarni saqlaydi.
+
+**Javob qaytarish:** return HttpResponse("Muvoffaqiyatli!")
+
+- Foydalanuvchiga muvaffaqiyatli saqlanganligi haqida xabar beradi.
+
+**Agar POST bo'lmasa:**
+
+```python
+else:
+    form = UserProfileForm(instance=request.user.profile)
+```  
+- Agar so'rov `GET` usuli bilan yuborilgan bo'lsa, forma foydalanuvchi profilidagi ma'lumotlar bilan to'ldiriladi.
+
+**Formani ko'rsatish:**
+
+```python
+return render(request, "accounts/edit_profile.html", {"form": form})
+```
+- `edit_profile.html` shablonini `render` qiladi va `forma` ma'lumotlarini uzatadi.
+        
+> `instance` parametri tahrirlanishi kerak bo'lgan obyektni ko'rsatadi va foydalanuvchining yangi kiritilgan ma'lumotlarini ushbu obyektga qo'shish imkonini beradi. Bu jarayon foydalanuvchining profilini samarali tarzda yangilashga yordam beradi.
+
+### 99. `enctype="multipart/form-data"` nima uchun kerak.
+
+> `enctype="multipart/form-data"` `HTML` formalarida fayl yuklash uchun ishlatiladi. Bu atribut formaning qanday ma'lumotlarni yuborishini belgilaydi.
+
+```html
+ <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button class="btn btn-primary mt-2" type="submit">Save Change</button>
+    </form>
+```
+- `Fayl yuklash:` Agar forma `fayl` (masalan, `rasm` yoki `hujjat`) yuklashni talab qilsa, `multipart/form-data` ni ishlatish kerak. Bu, `fayl` ma'lumotlarini to'g'ri formatda serverga yuborishga imkon beradi.
+
+> Agar siz `Django` yoki boshqa `web` frameworklar bilan ishlayotgan bo'lsangiz, bu atributni qo'shmasangiz, `fayl` yuklash jarayoni muvaffaqiyatsiz bo'ladi. 
+
+### 100. Django da `MEDIA_URL` va `MEDIA_ROOT`  nima uchun kerak va ular qanday sozlanadi.
+
+> `MEDIA_URL` va `MEDIA_ROOT` Django da foydalanuvchilar tomonidan yuklangan fayllarni boshqarish uchun zarur bo'lgan ikki muhim parametrdir. Keling, ularni batafsil ko'rib chiqamiz.
+
+1. `MEDIA_URL`
+
+- **Nima uchun kerak?**
+    - `MEDIA_URL` foydalanuvchilar tomonidan yuklangan fayllarga kirish uchun `URL` yo'lini belgilaydi. Bu `URL` orqali yuklangan fayllarni `web` sahifalarda ko'rsatish mumkin.
+- **Qanday sozlanadi?**
+    - `settings.py` faylida `MEDIA_URL` ni quyidagicha sozlash mumkin: 
+  
+    `MEDIA_URL = '/media/'`
+
+2. `MEDIA_ROOT`
+
+- **Nima uchun kerak?**
+    - `MEDIA_ROOT` yuklangan fayllar saqlanadigan joyning to'liq yo'lini belgilaydi. Bu fayllar serverda qayerda saqlanishini ko'rsatadi.
+
+- **Qanday sozlanadi?**
+
+    - `settings.py` faylida `MEDIA_ROOT` ni quyidagicha sozlash mumkin:
+
+    ```python
+    import os
+    
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    ```
+    > Bu yerda `BASE_DIR` - Django loyihasining asosiy papkasi. `media` papkasi esa yuklangan fayllar uchun ajratilgan joy.
+
+    **Misol:**
+
+    1. **Sozlash:**
+    
+    `settings.py` faylida quyidagi kodni qo'shing:
+
+    ```python
+    import os
+    
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    ```
+
+    2. `URL` **konfiguratsiyasi:**
+  
+    `urls.py` faylida quyidagi kodni qo'shing:
+
+    ```python
+    from django.conf import settings
+    from django.conf.urls.static import static
+    from django.urls import path
+    
+    urlpatterns = [
+        # Boshqa URL'lar...
+    ]
+    
+    if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    ```
+  3. **Fayl yuklash formasi:**
+  
+  `HTML` formasi orqali fayl yuklashni ta'minlash uchun quyidagi kodni ishlatishingiz mumkin:
+    
+    ```html
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="profile_photo">
+        <button type="submit">Yuklash</button>
+    </form>
+    ```
+
+  4. **Faylni ko'rsatish:**
+
+    Yuklangan faylni ko'rsatish uchun `HTML` kodida quyidagi misolni ko'rishingiz mumkin:
+
+    ```html
+    {% if user.profile.photo %}
+        <img src="{{ user.profile.photo.url }}" alt="Profile Photo">
+    {% else %}
+        <p>No photo uploaded.</p>
+    {% endif %}
+    ```
+    **Xulosa** 
+    - `MEDIA_URL`: Yuklangan fayllarga kirish uchun `URL`.
+    - `MEDIA_ROOT`: Yuklangan fayllar saqlanadigan joy.
+
+### 101. Nima uchun Django `template` lari ichidagi ` <img src="{{ user.profile.photo.url }}" alt="Profile Photo">` rasm manzilidan keyin `.url` sintaksisi yoziladi. Bu nima uchun kerak.
+
+- `user.profile.photo` orqali siz `photo` maydonidagi `fayl` ob'ektini olasiz. Biroq, bu ob'ektning o'zi rasmning `URL` manzilini emas, balki fayl ob'ektini ifodalaydi.
+- `.url` qo'shilishi, Django'ga bu fayl ob'ektining to'liq `URL` manzilini olishni buyuradi. Bu `URL`, rasmni brauzerda ko'rsatish uchun kerak bo'ladi.
+- Masalan, agar sizda rasm `media/profile_photos/user1.jpg` manzilida saqlangan bo'lsa, `.url` yordamida siz `http://yourdomain.com/media/profile_photos/user1.jpg` kabi to'liq `URL` manzilini olasiz.
+
+### 102. Django da `{% empt %}` nim uchun kerak?
+
+> Agar siz `Django` da `{% empty %}` tegi haqida so'rayotgan bo'lsangiz, bu tegi for `loop` ichida bo'sh ro'yxat yoki queryset bo'lganda ko'rsatiladigan xabarni belgilash uchun ishlatiladi. 
+
+> Misol uchun, agar sizda sharhlar ro'yxati bo'lsa va u bo'sh bo'lsa, siz quyidagi kodni ishlatishingiz mumkin:
+
+```html
+{% for comment in comments %}
+    <p>{{ comment.text }}</p>
+{% empty %}
+    <p>Hozircha hech qanday sharh yo'q.</p>
+{% endfor %}
+```
+
+### 103. Ushbu code dagi `get_absolute_url` funksiyasi nima uchun kerak batafsil tushuntiring.
+
+```python
+class Recipes(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True, blank=True)
+    ingredients = models.TextField(null=True, blank=True)
+    directions = models.TextField(null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
 
 
 
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('recipes:recipe_detail_ulr', kwargs={'recipe_id': self.pk})
+```
+
+> `get_absolute_url` funksiyasi `Django` modelida `URL` manzilini yaratish uchun ishlatiladi. Bu metod, modelning o'ziga xos `URL` manzilini qaytaradi, bu esa sizga model ob'ektiga to'g'ridan-to'g'ri murojaat qilish imkonini beradi. 
+
+1. **Foydasi:**
+    -  **Oson navigatsiya:** `get_absolute_url` metodini ishlatish orqali, siz model ob'ektiga to'g'ridan-to'g'ri `URL` orqali murojaat qilishingiz mumkin. Bu, masalan, foydalanuvchi yangi retsept qo'shganda yoki retseptni tahrirlashda foydalidir.
+    - **Kodning toza va o'qilishi oson:** `URL` larni yaratish uchun `reverse` funksiyasidan foydalanish, kodni toza va o'qilishi oson qiladi. Siz `URL` larni har safar qo'lda yozish o'rniga, modelning o'zida belgilangan nomdan foydalanasiz.
 
 
+2. **Qanday ishlaydi:**
+    - `reverse('recipes:recipe_detail_ulr', kwargs={'recipe_id': self.pk})`:
+        - `reverse` funksiyasi `URL` nomini chaqiradi. Bu yerda `recipes:recipe_detail_ulr` - bu sizning urls.py faylingizda belgilangan `URL` nomi.
+        - `kwargs={'recipe_id': self.pk}` - bu `URL` ga uzatiladigan argumentlar. `self.pk` - bu model ob'ektining birlamchi kaliti `(ID)` bo'lib, bu retseptning o'ziga xos identifikatoridir.
+
+3. **Misol:**
+
+Agar sizda `urls.py` faylida quyidagi `URL` pattern bo'lsa:
+
+```python
+from django.urls import path
+from .views import RecipeDetailView
+
+urlpatterns = [
+    path('recipes/<int:recipe_id>/', RecipeDetailView.as_view(), name='recipe_detail_ulr'),
+]
+```
+Bu yerda `recipe_id` `URL` da retseptning `ID` sini qabul qiladi. `get_absolute_url` metodini chaqirganda, masalan:
+
+```python
+recipe = Recipes.objects.get(id=1)
+url = recipe.get_absolute_url()
+```
+
+Bu `url` o'zgaruvchisi `/recipes/1/` kabi `URL` manzilini oladi, bu esa retseptning tafsilotlarini ko'rsatadigan sahifaga olib boradi.
 
 
+### 104. `login_required` dekoratori nima uchun kerak.
+
+> `login_required` dekoratori `Django` da tizimga kirgan foydalanuvchilarga kirishni cheklash uchun ishlatiladi. Bu dekorator yordamida faqat tizimga kirgan foydalanuvchilar ma'lum funksiyalarga yoki sahifalarga kirish huquqiga ega bo'lishadi. 
+
+**Qanday ishlaydi:**
+
+1. **Dekoratorni qo'shish:** Siz `login_required` dekoratorini ko'rsatilgan funksiyaga qo'shishingiz kerak. Masalan:
+
+```python
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def add_recipe(request):
+    # retsept qo'shish kodi
+```
+2. **Foydalanuvchini yo'naltirish:** Agar foydalanuvchi tizimga kirgan bo'lmasa, u avtomatik ravishda kirish sahifasiga yo'naltiriladi. Bu foydalanuvchilarga kirish huquqi bo'lmagan sahifalarga kirishga urinishlarini oldini oladi.
+3. **Sozlamalar:** `settings.py` faylida `LOGIN_URL` va `LOGIN_REDIRECT_URL` kabi parametrlarni belgilash orqali foydalanuvchilarni qayerga yo'naltirishni belgilashingiz mumkin.
+
+> `LOGIN_URL` va `LOGIN_REDIRECT_URL` Django da foydalanuvchilarni tizimga kirish jarayonini boshqarish uchun ishlatiladigan muhim sozlamalardir.
+
+`LOGIN_URL`:
+
+- **Ma'nosi:** Bu parametr foydalanuvchilar tizimga kirish uchun yo'naltiriladigan sahifaning `URL` manzilini belgilaydi.
+- **Qachon ishlatiladi:** Agar foydalanuvchi tizimga kirish huquqiga ega bo'lmasa (masalan, `login_required` dekoratori qo'llanilganda), u avtomatik ravishda bu `URL` manziliga yo'naltiriladi.
+
+`LOGIN_REDIRECT_URL`:
+
+- **Ma'nosi:** Bu parametr foydalanuvchi muvaffaqiyatli tizimga kirgandan so'ng qayerga yo'naltirilishini belgilaydi.
+- **Qachon ishlatiladi:** Foydalanuvchi tizimga kirgandan so'ng, u ushbu `URL` manziliga o'tkaziladi, bu esa foydalanuvchiga qulaylik yaratadi.
+
+**Misol:**
+
+```python
+# settings.py faylida
+LOGIN_URL = "accounts:login"  # Kirish sahifasi
+LOGIN_REDIRECT_URL = "foodie_app:index"    # Kirgandan so'ng yo'naltiriladigan sahifa
+```
+
+### 105. `Django` da `Messaging Framework` qanday qo'llash mumkin?
+
+`Django` da `Messaging Framework` ni qo'llash uchun quyidagi asosiy qadamlarni bajarishingiz kerak:
+
+1. **O'rnatish:**
+     
+   - Django loyihangizda `Messaging Framework` allaqachon o'rnatilgan bo'lishi kerak. Buni `settings.py` faylida INSTALLED_APPS bo'limida `django.contrib.messages` ni tekshirib ko'ring.
+
+2. **Middleware qo'shish:**
+   
+   - `settings.py` faylida `MIDDLEWARE` bo'limida `django.contrib.messages.middleware.MessageMiddleware` ni qo'shganingizga ishonch hosil qiling.
+
+3. **Xabar yaratish:**
+
+   - Xabarni yaratish uchun, `views.py` faylida `from django.contrib import messages` ni import qiling. Keyin, foydalanuvchi biror amalni bajarganda xabar qo'shishingiz mumkin. Masalan:
+
+    ```python
+    from django.contrib import messages
+    
+    def feedback_view(request):
+        # Foydalanuvchi fikrini qabul qilish
+        if form.is_valid():
+            # Fikr muvaffaqiyatli yuborilganini xabar qilish
+            messages.success(request, "Fikr muvaffaqiyatli yuborildi!")
+            return redirect('index')
+    ```
+
+4. **Xabarlarni ko'rsatish:**
+
+   - Xabarlarni ko'rsatish uchun, `HTML` shablonida xabarlarni chiqarish kerak. Masalan:
+
+    ```html
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    ```
+
+### 106. Django ilovasiga Qidiruv qo'shish uchun qilinishi kerak bo'lgan ishlar ketma ketligi.
+
+1. **Qidiruv Formasini Yaratish**
+   - `forms.py` faylini oching va qidiruv formasini yarating:
+    ```python
+    from django import forms
+    
+    class SearchForm(forms.Form):
+        query = forms.CharField(
+            label='',  # Labelni bo'sh qoldirish
+            widget=forms.TextInput(attrs={
+                'placeholder': 'Retseptlarni qidirish...',
+                'class': 'form-control'
+            })
+        )
+    ```
+
+2. **Kontekst Protsessorini Yaratish**
+   - `context_processors.py` faylini yarating va kontekst protsessorini yozing:
+
+    `context_processors.py`:
+
+    ```python
+    from .forms import SearchForm
+    
+    def search_form(request):
+        return {'search_form': SearchForm()}
+    ```
+3. **Sozlamalar Faylini Yangilash**
+   - `settings.py` faylida kontekst protsessorini qo'shing:
+
+    `settings.py`:
+    ```python
+    'YOUR_APP_NAME.context_processors.search_form',
+    ```
+
+4. **Shablonlarda Qidiruv Formasini Qo'shish**
+   - `base.html`  yoki kerakli shablon faylida qidiruv formasini qo'shing:
+
+    `base.html`:
+    ```html
+    <form method="get" action="{% url 'search_results' %}">
+        {{ search_form.as_p }}  <!-- Formani ko'rsatish -->
+        <button type="submit">Qidirish</button>
+    </form>
+    ```
+5. **Qidiruv Natijalarini Ko'rsatish uchun Ko'rinish `(View)` Yaratish**
+
+    - `views.py` faylida qidiruv natijalarini ko'rsatish uchun ko'rinish yarating:
+
+   `views.py`:
+
+    ```python
+    from django.shortcuts import render
+    from .models import Recipe  # O'zingizning modelingizni import qiling
+    from .forms import SearchForm
+    
+    def search_results(request):
+        form = SearchForm(request.GET or None)
+        results = []
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Recipe.objects.filter(name__icontains=query)  # Qidiruvni amalga oshirish
+        return render(request, 'recipes/search_results.html', {'form': form, 'results': results})
+    ```
+6. **`URL` Yo'nalishini Qo'shish**
+   - `urls.py` faylida qidiruv natijalari uchun `URL` yo'nalishini qo'shing:
+
+    `urls.py`:
+
+    ```python
+    from django.urls import path
+    from .views import search_results
+    
+    urlpatterns = [
+        path('search/', search_results, name='search_results'),
+    ]
+    ```
+
+7. **Natijalarni Ko'rsatish uchun Shablon Yaratish**
+
+    - `search_results.html` faylini yarating va qidiruv natijalarini ko'rsatish uchun shablonni yozing:
+
+    `search_results.html`:
+
+    ```html
+    <h1>Qidiruv Natijalari</h1>
+    <form method="get" action="{% url 'search_results' %}">
+        {{ form.as_p }}
+        <button type="submit">Qidirish</button>
+    </form>
+    <ul>
+        {% for recipe in results %}
+            <li>{{ recipe.name }}</li>
+        {% empty %}
+            <li>Natijalar topilmadi.</li>
+        {% endfor %}
+    </ul>
+    ```
+8. **Sinov va Tekshirish**
+    - Ilovangizni ishga tushiring va qidiruv formasini sinab ko'ring. Qidiruv so'rovlarini kiritib, natijalarni ko'ring.
+
+### 107. `Django` da `Kontekst Protsessori `nima uchun kerak va batafsil tushuntiring.
+
+> `Kontekst protsessori` `Django` da shablonlarga ma'lumotlarni avtomatik ravishda qo'shish uchun ishlatiladi. Ular, asosan, har bir so'rovga javob berishda shablon kontekstini kengaytirish uchun mo'ljallangan. Quyida kontekst protsessorining maqsadi va ishlash tartibi haqida batafsil tushuntirish beraman:
+
+1. **Global Ma'lumotlar:**
+   - `Kontekst protsessorlari` yordamida siz bir nechta shablonlarda bir xil ma'lumotlarni (masalan, foydalanuvchi ma'lumotlari, qidiruv formasi) takrorlamasdan taqdim etishingiz mumkin. Bu, kodni soddalashtiradi va takrorlanishni kamaytiradi.
+
+2. **Avtomatik Qo'shish:**
+   - Har bir so'rovga javob berishda, `kontekst protsessorlari` avtomatik ravishda ma'lumotlarni shablon kontekstiga qo'shadi. Bu, shablonlarda kerakli ma'lumotlarni qo'shish uchun har bir ko'rinishda `(view)` alohida kod yozishni talab qilmaydi.
+
+3. **Kengaytirilgan Shablonlar:**
+   - Ular shablonlarda ko'rsatilishi kerak bo'lgan ma'lumotlarni markazlashtirish imkonini beradi. Masalan, qidiruv formasini har bir sahifada ko'rsatish uchun kontekst protsessoridan foydalanish mumkin.
+
+**Xulosa:**
+
+> Kontekst protsessorlari Django ilovalarida ma'lumotlarni boshqarishni soddalashtiradi va shablonlarda kerakli ma'lumotlarni avtomatik ravishda taqdim etadi. Bu, kodni toza va samarali saqlashga yordam beradi.
 
 
+### 108. Sessiyalar nima?
 
+> `Sessiyalar` — bu veb-brauzer va server o'rtasidagi aloqa davomida foydalanuvchi haqidagi ma'lumotlarni saqlash va eslab qolish imkonini beruvchi mexanizmdir. Ular foydalanuvchi tajribasini yaxshilash uchun ishlatiladi. 
 
+**Sessiyalarning asosiy xususiyatlari:**
 
+- **Ma'lumotlarni saqlash:** Sessiyalar foydalanuvchi haqidagi ma'lumotlarni, masalan, login holati, afzalliklar yoki xarid savatchasi kabi ma'lumotlarni saqlaydi.
 
+- **Vaqtinchalik:** Sessiyalar odatda foydalanuvchi brauzerni yopganda yoki sessiya tugagach, avtomatik ravishda yo'qoladi. Bu ma'lumotlar vaqtinchalik bo'lib, foydalanuvchi saytga qaytganida yangilanadi.
 
+### 109. Sessiyalar qanday ishlaydi?
+Sessiyalar quyidagi jarayon orqali ishlaydi:
 
+1. **Sessiya yaratish:** Foydalanuvchi veb-saytga kirganda, server yangi sessiya yaratadi. Bu jarayonda server foydalanuvchiga noyob sessiya identifikatori `(ID)` beradi. Bu `ID`, foydalanuvchining brauzerida saqlanadi.
 
+2. **Ma'lumotlarni saqlash:** Foydalanuvchi sayt bilan muloqot qilganda, server foydalanuvchining sessiya `ID` sini ishlatib, u haqidagi ma'lumotlarni saqlaydi. Masalan, foydalanuvchi tizimga kirganda, uning login ma'lumotlari sessiyada saqlanadi.
 
+3. **Brauzer orqali uzatish:** Har safar foydalanuvchi saytga murojaat qilganda, brauzer sessiya `ID` sini serverga yuboradi. Bu orqali server foydalanuvchini tanib oladi va uning sessiya ma'lumotlarini olish imkoniyatiga ega bo'ladi.
 
+### 110. `Django` da Sessiyalarni o'rnatish jarayoni qanday amalga oshiriladi.
 
+`Django` da sessiyalarni o'rnatish jarayoni quyidagi bosqichlardan iborat:
 
+1. `settings.py` **faylini tahrirlash**
+   - `INSTALLED_APPS` bo'limiga sessiyalarni qo'shish:
+    ```python
+    INSTALLED_APPS = [
+        ...
+        'django.contrib.sessions',
+        ...
+    ]
+    ```
+   - `MIDDLEWARE` bo'limiga `SessionMiddleware` ni qo'shish:
+    ```python
+    MIDDLEWARE = [
+        ...
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        ...
+    ]
+    ```
+2. **Sessiya saqlash mexanizmini tanlash**
 
+- `SESSION_ENGINE` parametrini belgilash: `Django` sessiya ma'lumotlarini saqlash uchun turli mexanizmlarni qo'llab-quvvatlaydi. Odatda, ma'lumotlar bazasida saqlash uchun quyidagi parametrni qo'shishingiz mumkin:
 
+    `'SESSION_ENGINE = 'django.contrib.sessions.backends.db'`
 
+3. Ma'lumotlar bazasini yangilash
 
+- **Sessiya modelini yaratish:** Django sessiya ma'lumotlarini saqlash uchun kerakli jadvalni yaratish uchun quyidagi buyruqni bajarishingiz kerak:
 
+    `python manage.py migrate`
 
+4. **Sessiyalarni ishlatish**
 
+- **Foydalanuvchi sessiyasini yaratish va yangilash:** `Django` da sessiyalarni ishlatish uchun, siz `request.session` obyekti orqali ma'lumotlarni saqlashingiz va yangilashingiz mumkin. Misol:
 
+    ```python
+    def my_view(request):
+        request.session['key'] = 'value'  # Sessiya yaratish
+        visits = request.session.get('visits', 0)  # Sessiya ma'lumotini olish
+        request.session['visits'] = visits + 1  # Yangilash
+    ```
 
+5. **Sessiya tugatish**
 
-
-
+- **Sessiyani tugatish:** Agar foydalanuvchi sessiyani tugatmoqchi bo'lsa, siz `request.session.flush()` metodidan foydalanishingiz mumkin.
 
 
 

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block page_header %}
+    <h3>Edit Profile {{ user.profile }}</h3>
+    <div class="mb-3">
+        {% if user.profile.profile_photo %}
+            <img src="{{ user.profile.profile_photo.url }}" height="200" width="200" alt="Profile photo" class="img-thumbnail">
+
+        {% else %}
+            <p>No Photo uploaded</p>
+        {% endif %}
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button class="btn btn-primary mt-2" type="submit">Save Change</button>
+    </form>
+{% endblock content %}

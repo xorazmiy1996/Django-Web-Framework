@@ -1,14 +1,37 @@
+{% extends "base.html" %}
 
- {% extends "base.html" %}
+{% block page_header %}
+    <h5>Recipe</h5>
+{% endblock page_header %}
 
- {% block content %}
-   <div>
-       {% for recipe in recipes %}
-          <div>
-              <h5>{{ recipe.name }}</h5>
-              <p>{{ recipe.description }}</p>
-              <a href="{% url 'recipes:recipe_url' recipe.id %}"> View recipe detail</a>
-          </div>
-       {% endfor %}
-   </div>
- {% endblock content %}
+{% block content %}
+    <div>
+        {% for recipe in recipes %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>{{ recipe.name }}, Added: {{ recipe.date_created| date:"d M, Y H:i" }}</h5>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Description:</h5>
+                    <p class="card-text">{{ recipe.description }}</p>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <small><a href="{% url 'recipes:recipe_detail_ulr' recipe.id %}" class="btn btn-primary">View
+                                recipe detail</a></small>
+                        </div>
+                        <div class="col-auto">
+                            {% if user.profile.profile_photo %}
+                                <img src="{{ user.profile.profile_photo.url }}" alt="Profile"
+                                     style="width: 40px; height: 40px; border-radius: 50%; margin-right: 5px">
+                            {% endif %}
+                        <small> Created by: {{ recipe.user.username }}</small>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
+

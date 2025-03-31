@@ -1,13 +1,17 @@
  {% extends "base.html" %}
 
+{% block page_header %}
+     <h3>Add Recipe</h3>
+{% endblock page_header %}
+
  {% block content %}
-   <h3>Add Categories</h3>
-     <div>
-        <form method="post">
+
+
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_div }}
-            <button type="submit">Save</button>
+            <button class="btn btn-outline-success mt-2"  type="submit">Save Recipe</button>
         </form>
-     </div>
+
 
  {% endblock content %}

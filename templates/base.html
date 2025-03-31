@@ -1,32 +1,97 @@
+{% load django_bootstrap5 %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Foodie</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 <body>
-<header>
-    <div>
-        <a href="{% url 'foodie_app:index' %}">Foodie</a>
-        <a href="{% url 'foodie_app:add-recipe-ulr' %}">Add recipe</a>
-    </div>
-</header>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'foodie_app:index' %}">Foodie</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav  my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                {#                <li class="nav-item">#}
+                {#                    <a class="nav-link active" href="{% url 'foodie_app:add-recipe-with-ulr' %}">Add recipe</a>#}
+                {#                </li>#}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'recipes:recipes_ulr' %}">All
+                        recipes</a>
+                </li>
+            </ul>
 
-<main>
-    <div class="container">
-        {% block content %}
-        {% endblock content %}
+
+            <!--  Right Side Of Navbar  -->
+            <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
+
+
+                <form class="d-flex" role="search" method="get" action="{% url 'recipes:search_results_ulr' %}">
+                    {{ search_form.as_div }}
+                    <button class="btn btn-outline-success ms-1" type="submit">Search</button>
+                </form>
+
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item d-flex align-items-center">
+                        {% if user.profile.profile_photo %}
+                            <img src="{{ user.profile.profile_photo.url }}" alt="Profile"
+                                 style="width: 40px; height: 40px; border-radius: 50%; margin-right: 5px">
+                        {% endif %}
+                        <span class="nav-text me-2">Hello:</span> <a
+                            href="{% url 'accounts:edit_profile_ulr' %}">{{ user.username }}</a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <form class="d-flex" method="post" action="{% url 'accounts:logout' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-success ms-3" type="submit">Chiqish</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:register_ulr' %}">Registration</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="d-flex" method="post" action="{% url 'accounts:login' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-success" type="submit">Login</button>
+                        </form>
+                    </li>
+
+                {% endif %}
+            </ul>
+
+        </div>
     </div>
+</nav>
+
+
+<main class="container">
+
+    <div class="pb-2 mb-2 border-bottom">
+        {% block page_header %}
+        {% endblock page_header %}
+    </div>
+    {% block content %}
+    {% endblock content %}
+
 </main>
 
-<div>
-    <hr>
-    <footer>
-        <pre>Footer</pre>
-    </footer>
-</div>
 
-
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <span class="text-muted">@ 2029</span>
+    </div>
+</footer>
 
 
 </body>

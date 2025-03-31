@@ -1,11 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h5>{{ recipe.name }}</h5>
-    <i>Descriptions:</i>
-    <p>{{ recipe.description }}</p>
-    <i>ingredients:</i>
-    <p>{{ recipe.ingredients }}</p>
 
-
+    <div class="card">
+        <h5 class="card-header">{{ recipe.name }}</h5>
+        <div class="card-body">
+            <h5 class="card-title">Descriptions:</h5>
+            <p class="card-text">{{ recipe.description }}</p>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Ingredients:</h5>
+            <p class="card-text">{{ recipe.ingredients }}</p>
+        </div>
+     <div class="card-body">
+            <h5 class="card-title">Directions:</h5>
+            <p class="card-text">{{ recipe.directions }}</p>
+        </div>
+    </div>
+    <div class="mt-4">
+    <h5>Comments:</h5>
+        {% for comment in  comments %}
+        	<div class="border p-3 mb-3 rounded">
+                <div class="d-flex align-items-center mb-2">
+             {% if user.profile.profile_photo %}
+                 <img src="{{ user.profile.profile_photo.url }}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 5px">
+             {% endif %}
+                <div>
+                    <strong>{{ comment.user.username }}</strong>
+                    Commented on {{ comment.date_created|date:"F d, Y" }} at {{ comment.date_created|time:"H:i" }}:
+                    <br>
+                    <p class="fst-italic">"{{ comment.text }}"</p>
+                </div>
+            </div>
+            </div>
+        {% empty %}
+            No comment yet.
+        {% endfor %}
+    </div>
+    <!-- Comment Form   -->
+{% if user.is_authenticated %}
+    <h5>Leave comment:</h5>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_div }}
+        <div class="mt-2">
+            <button type="submit" class="btn btn-primary">Add Commite</button>
+        </div>
+    </form>
+{% else %}
+    <p><a href="{% url 'accounts:login' %}">Log in</a> to post a comment</p>
+{% endif %}
 {% endblock content %}
+

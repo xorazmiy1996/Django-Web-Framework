@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from recipes.models import Recipes
 from sandbox.forms import FeedbackForm
+from django.contrib import messages
 
 
 def index(request):
@@ -27,8 +28,8 @@ def feedback(request):
     if request.method == "POST":
         form = FeedbackForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
-            return redirect("thank-you-url")
+            messages.add_message(request, messages.SUCCESS, "Feedback sent successfully!")
+            return redirect("sandbox:index")
     else:
         form = FeedbackForm()
     return render(request, "sandbox/feedback_form.html", {"form": form})

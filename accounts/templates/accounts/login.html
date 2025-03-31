@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Login</h2>
+    <form action="{% url 'accounts:login' %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Foydalanuvchi ismi:</label>
+            <input type="text" class="form-control" name="username">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input name="password" required type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+
+        <button class="btn btn-primary
+" type="submit">Kirish</button>
+    </form>
+
+{% endblock content %}
