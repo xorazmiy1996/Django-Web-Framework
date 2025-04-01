@@ -2613,6 +2613,180 @@ Sessiyalar quyidagi jarayon orqali ishlaydi:
 
 - **Sessiyani tugatish:** Agar foydalanuvchi sessiyani tugatmoqchi bo'lsa, siz `request.session.flush()` metodidan foydalanishingiz mumkin.
 
+### 111. `Django` da Sessiyaning tugash vaqtini qanday aniqlaysiz?
+
+> Sessiyaning tugash vaqtini aniqlash uchun `Django` da `get_expiry_age()` metodidan foydalanasiz. Bu metod sessiyaning tugashiga qancha vaqt qolganini soniyalarda qaytaradi. 
+
+Quyidagi oddiy qadamlar orqali sessiyaning tugash vaqtini aniqlashingiz mumkin:
+
+1. **Sessiya ob'ektini oling:** Django'da sessiya ob'ekti odatda `request.session` orqali olinadi.
+
+2. **Tugash vaqtini aniqlang:** `get_expiry_age()` metodini chaqiring va natijani oling.
+
+Misol uchun, quyidagi kodni ko'rib chiqing:
+
+```python
+expiry_age = request.session.get_expiry_age()
+print(f"Sessiya tugashiga {expiry_age} soniya qoldi.")
+```
+
+### 112. Usbu kodeni dasturchi sifatida tushuntirib bering:
+
+```python
+recipe.favorited_by.remove(request.user)
+```
+
+> `recipe.favorited_by.all()` kod sintaksisi Django `ORM` (Object-Relational Mapping) da ishlatiladi va bu yerda `favorited_by` - bu Recipes modelidagi biror bir `ManyToManyField` yoki `ForeignKey` maydoni bo'lishi mumkin. Keling, bu kodni batafsil tushuntirib beray:
+
+**Tushuntirish:**
+
+1. `recipe:`
+ - Bu o'zgaruvchi `get_object_or_404` funksiyasi orqali olingan `Recipes` modelidagi bir retsept ob'ektini ifodalaydi.
+
+2. `favorited_by:`
+ - Bu `recipe` ob'ektining `favorited_by` maydoni. Bu maydon, odatda, retseptni kimlar sevimli deb belgilaganini ko'rsatadi. Agar bu `ManyToManyField` bo'lsa, u holda bir retsept bir nechta foydalanuvchilar tomonidan sevimli deb belgilanishi mumkin.
+
+3. `.all():`
+
+   - `.all()` metodi, favorited_by maydonidagi barcha foydalanuvchilarni olish uchun ishlatiladi. Bu metod, `favorited_by` maydonida saqlangan barcha ob'ektlarni (foydalanuvchilar) qaytaradi.
+
+**Natija:**
+
+ - `recipe.favorited_by.all()` chaqirilganda, bu kod `recipe` retseptiga sevimli deb belgilangan barcha foydalanuvchilar ro'yxatini `(QuerySet)` qaytaradi. Natijada, sizda foydalanuvchilar ro'yxati bo'ladi, bu ro'yxatda har bir foydalanuvchi `User` modelidan olingan ob'ekt sifatida ko'rsatiladi.
+
+### 113. Usbu kodeni dasturchi sifatida tushuntirib bering:
+
+```python
+def toggle_favorite(request, recipe_id):
+    recipe = get_object_or_404(Recipes, id=recipe_id)
+    if request.user in recipe.favorited_by.all():
+        recipe.favorited_by.remove(request.user)
+    else:
+        recipe.favorited_by.add(request.user)
+    return redirect("recipes:recipe_detail_ulr", recipe_id=recipe_id)
+```
+
+> Bu kod Django web frameworkida `toggle_favorite` funksiyasini ifodalaydi, bu esa foydalanuvchining retseptni sevimli retseptlar ro'yxatiga qo'shish yoki olib tashlash imkonini beradi.
+
+**Kod tahlili:**
+
+1. **Funksiya ta'rifi:**
+
+   ```python
+   def toggle_favorite(request, recipe_id):
+    ```
+   - `toggle_favorite` - bu funksiya, `request` va `recipe_id` parametrlarini qabul qiladi. `request` foydalanuvchining so'rovini ifodalaydi, `recipe_id` esa sevimli retseptni aniqlash uchun ishlatiladi.
+
+2. **Retseptni olish:**
+
+    ```python
+    recipe = get_object_or_404(Recipes, id=recipe_id)
+    ```
+   - `get_object_or_404` funksiyasi `Recipes` modelidan berilgan `recipe_id` ga mos keladigan retseptni olish uchun ishlatiladi. Agar retsept topilmasa, `404` xato sahifasi ko'rsatiladi.
+
+3. `Foydalanuvchini tekshirish:`
+
+    ```python
+    if request.user in recipe.favorited_by.all():
+    ```
+   - Bu qismda, `request.user` (hozirgi foydalanuvchi) `recipe.favorited_by.all()` (retseptga sevimli deb belgilangan foydalanuvchilar ro'yxati) bilan solishtiriladi ya'ni hozirgi foydalanuvchi  retsepga sevimli deb belgilangan foydalanuvchilar ro'ygantida bor yo'qligini tekshiradi.
+
+4. **Sevimli retseptni olib tashlash yoki qo'shish:**
+
+    ```python
+    recipe.favorited_by.remove(request.user)
+    ```
+    - Agar foydalanuvchi retseptni sevimli retseptlaridan olib tashlamoqchi bo'lsa, `remove` metodi chaqiriladi.
+    ```python
+    recipe.favorited_by.add(request.user)
+    ```
+    - Agar foydalanuvchi retseptni sevimli retseptlar ro'yxatiga qo'shmoqchi bo'lsa, `add` metodi chaqiriladi. 
+
+5. **Qayta yo'naltirish:**
+
+    ```python
+    return redirect("recipes:recipe_detail_ulr", recipe_id=recipe_id)
+    ```
+    - Funksiya oxirida foydalanuvchi retseptning tafsilotlari sahifasiga qayta yo'naltiriladi. 
+
+**Xulosa:**
+
+> Ushbu funksiya foydalanuvchining sevimli retseptlarini boshqarish uchun mo'ljallangan
+
+
+### 114. Django templating tilida ishlatilinadigan metodlar:
+
+> `Django` templating tilida metodlar bilan ishlashda ba'zi cheklovlar mavjud. `Django` templating tilida faqatgina oddiy `metodlar` va `atributlar` chaqirilishi mumkin. Keling, `Django` templating tilida metodlar bilan ishlashning asosiy jihatlarini ko'rib chiqamiz:
+
+1. **Oddiy Metodlar**
+
+- **Oddiy metodlar:** Django templating tilida oddiy metodlar chaqirilishi mumkin, lekin ular qavslar bilan emas. Masalan, `all`, `count`, `first` kabi metodlar.
+
+    ```html
+    {% if user.favorite_recipes.all %}
+        <!-- Foydalanuvchining sevimli retseptlari mavjud -->
+    {% endif %}
+    ```
+2. **Atributlar**
+
+- **Atributlar:** Obyektning atributlariga to'g'ridan-to'g'ri murojaat qilish mumkin. Masalan, `recipe.title` yoki `user.username`.
+
+    ```html
+    <h1>{{ recipe.title }}</h1>
+    <p>Foydalanuvchi: {{ user.username }}</p>
+    ```
+
+3. **Filtrlar**
+
+- **Filtrlar:** Django templating tilida ma'lumotlarni o'zgartirish uchun filtrlar ishlatiladi. Filtrlar`|` belgisidan foydalanib qo'llaniladi.
+
+    ```html
+    <p>{{ recipe.created_at|date:"F j, Y" }}</p>
+    ```
+
+4. **Shartli Operatorlar**
+
+- **Shartli operatorlar:** `if`, `else`, `for` kabi shartli operatorlar yordamida shartlarni tekshirish va takrorlash mumkin.
+
+    ```html
+    {% if recipe in user.favorite_recipes.all %}
+        <button>Remove</button>
+    {% else %}
+        <button>Add</button>
+    {% endif %}
+    ```
+5. **Qayta ishlash**
+
+- **Qayta ishlash:** for operatori yordamida ro'yxatlarni qayta ishlash mumkin.
+
+    ```html
+    <ul>
+    {% for recipe in user.favorite_recipes.all %}
+        <li>{{ recipe.title }}</li>
+    {% endfor %}
+    </ul>
+    ```
+`Xulosa`:
+
+> `Django templating tilida metodlar qavslar bilan chaqirilmaydi`, faqat oddiy metodlar va atributlar ishlatiladi.
+
+> Filtrlar va shartli operatorlar yordamida ma'lumotlarni o'zgartirish va shartlarni tekshirish mumkin.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

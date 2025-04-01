@@ -1,7 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from comments.forms import CommentForm
-from foodie_app.forms import RecipeForm
 from foodie_app.models import Category
 from recipes.forms import SearchForm
 from recipes.models import Recipes
@@ -59,8 +59,16 @@ def search_results(request):
     form = SearchForm(request.GET)   # request.GET ni to'g'ridan-to'g'ri berish
     query = form.data.get("query", "")  # form dan query ni olish
     results = Recipes.objects.filter(name__icontains=query) if query else []
-    print(results)
     context = {'results': results, 'query': query}
     return render(request, 'recipes/search_results.html', context)
 
+@login_required
+def toggle_favorite(request, recipe_id):
+    print(recipe_id)
+    recipe = get_object_or_404(Recipes, id=recipe_id)
+    if request.user in recipe.favorited_by.all():
+        recipe.favorited_by.remove(request.user)
+    else:
+        recipe.favorited_by.add(request.user)
+    return redirect("recipes:recipe_detail_ulr", recipe_id=recipe_id)
 

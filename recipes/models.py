@@ -18,6 +18,7 @@ class Recipes(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
+    favorited_by = models.ManyToManyField(User, related_name='favorite_recipes', blank=True)
     image = models.ImageField(upload_to="recipe_images",null=True, blank=True)
 
 

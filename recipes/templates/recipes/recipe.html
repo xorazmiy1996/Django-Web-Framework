@@ -1,22 +1,74 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="card mb-3 mx-auto">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% if recipe.image %}
+                            <img width="100%" class="image-fluid rounded-start shadow" src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
+                        {% else %}
+                            <img width="100%" class="image-fluid rounded-start shadow" src="https://placehold.co/800?text=placeholder" alt="recipe">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ recipe.name }}</h5>
+                            <p>Description:</p>
+                            <p class="card-text">{{ recipe.description }}</p>
+                        </div>
+                        <div class="card-body">
+                            <p>Ingredients:</p>
+                            <p class="card-text">{{ recipe.ingredients }}</p>
+                        </div>
+                        <div class="card-body">
+                            <p>Directions:</p>
+                            <p class="card-text">{{ recipe.directions }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between mx-3 mb-3">
+                            <div class="d-flex align-items-end">
+                                <small class="text-body-secondary ">Added: {{ recipe.date_created| date:"d M, Y H:i" }}</small>
+                            </div>
+                            <div>
+                                <form action="{% url 'recipes:toggle_favorite_ulr' recipe_id=recipe.id %}">
+                                    {% csrf_token %}
+                                    {% if recipe in user.favorite_recipes.all  %}
+                                        <button type="submit" class="btn btn-warning">Remove</button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-primary">Add</button>
+                                    {% endif %}
+                                </form>
+                            </div>
 
-    <div class="card">
-        <h5 class="card-header">{{ recipe.name }}</h5>
-        <div class="card-body">
-            <h5 class="card-title">Descriptions:</h5>
-            <p class="card-text">{{ recipe.description }}</p>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Ingredients:</h5>
-            <p class="card-text">{{ recipe.ingredients }}</p>
-        </div>
-     <div class="card-body">
-            <h5 class="card-title">Directions:</h5>
-            <p class="card-text">{{ recipe.directions }}</p>
-        </div>
-    </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+{#    <div class="card">#}
+{#        <h5 class="card-header">{{ recipe.name }}</h5>#}
+{#        <div class="card-body">#}
+{#            <h5 class="card-title">Descriptions:</h5>#}
+{#            <p class="card-text">{{ recipe.description }}</p>#}
+{#        </div>#}
+{#        <div class="card-body">#}
+{#            <h5 class="card-title">Ingredients:</h5>#}
+{#            <p class="card-text">{{ recipe.ingredients }}</p>#}
+{#        </div>#}
+{#     <div class="card-body">#}
+{#            <h5 class="card-title">Directions:</h5>#}
+{#            <p class="card-text">{{ recipe.directions }}</p>#}
+{#        </div>#}
+{#    </div>#}
+
+
+
+
+
+
+
+
     <div class="mt-4">
     <h5>Comments:</h5>
         {% for comment in  comments %}
