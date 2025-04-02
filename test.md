@@ -2773,29 +2773,71 @@ def toggle_favorite(request, recipe_id):
 > Filtrlar va shartli operatorlar yordamida ma'lumotlarni o'zgartirish va shartlarni tekshirish mumkin.
 
 
+### 115. Django loyihasi ichida `.venv` papkasi bor va uni activlashtirgan, lekin `pip` buyurqlari ishlamaypti, bunday holda nima qilish kerak.
+
+Agar siz `.venv` papkasini faollashtirgan bo'lsangiz, lekin `pip` buyruqlari ishlamayotgan bo'lsa, bu bir necha sabablarga ko'ra bo'lishi mumkin. Quyidagi qadamlarni tekshirib ko'ring:
+
+1. **Virtual muhitni to'g'ri faollashtirish:**
+   - Windows uchun: 
+
+        ```python
+        .venv\Scripts\activate
+        ```
+
+  - Faollashtirilganligini tekshirish uchun terminalda `(venv)` prefiksi ko'rinishi kerak.
+
+
+2. `Pip` **o'rnatilganligini tekshirish:**
+
+   - Virtual muhit faollashtirilgandan so'ng, pip o'rnatilganligini tekshirish uchun quyidagi buyruqni bajarishingiz mumkin: `pip --version`
+   - Agar `pip` o'rnatilmagan bo'lsa, uni quyidagi buyruq bilan o'rnatishingiz mumkin:  `python -m ensurepip`
+
+3. **Pip yangilash:**
+
+    - Ba'zan eski versiya muammolarni keltirib chiqarishi mumkin. `pip` ni yangilash uchun quyidagi buyruqni bajarishingiz mumkin: `python -m pip install --upgrade pip`
+
+4. **Xatolik xabarlari:**
+
+    - Agar `pip` buyruqlari hali ham ishlamasa, terminalda ko'rsatilgan xatolik xabarlarini diqqat bilan o'qib chiqing. Bu xatoliklar muammoni aniqlashda yordam berishi mumkin.
 
 
 
+### 116. FontAwesome nima va nima uchun kerka.
+
+> `FontAwesome` — bu veb loyihalaringizda ishlatishingiz mumkin bo'lgan chiroyli ikonlar to'plami. Oddiy tugmalar o'rniga, ushbu ikonlarni qo'shib, ilovangizni yanada jozibador va foydalanuvchilar uchun qulayroq qilishingiz mumkin.
 
 
+### 117. `Django` loyihasiga `FontAwesome` ni o'rnatish ketma-ketligi. 
+
+1. **Terminalda quydagi kutubxonani o'rnating:**
+
+    `pip install fontawesomefree`
 
 
+2. `settings.py` faylini tahrirlash
+
+    ```python
+    INSTALLED_APPS = [
+         ...
+         'fontawesomefree',
+         ...
+     ]
+    ```
+3. `base.html` shabloniga ushbu kode ni qo'shing:
+    
+    ```html
+    <head>
+       <!-- Our project just needs Font Awesome Free's Solid and Brand files -->
+       <!-- Link tags cause URI malformed error  -->
+       <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+       <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+       <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    </head>
+       ...
+    ```  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 

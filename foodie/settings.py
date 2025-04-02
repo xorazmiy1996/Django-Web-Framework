@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     "recipes",
     "comments",
     "accounts",
-    "django_bootstrap5"
+    "django_bootstrap5",
+    "fontawesomefree",
 ]
 
 MIDDLEWARE = [
