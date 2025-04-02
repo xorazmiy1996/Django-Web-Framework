@@ -2,81 +2,93 @@
 
 {% block content %}
     <div class="card mb-3 mx-auto">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        {% if recipe.image %}
-                            <img width="100%" class="image-fluid rounded-start shadow" src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
-                        {% else %}
-                            <img width="100%" class="image-fluid rounded-start shadow" src="https://placehold.co/800?text=placeholder" alt="recipe">
-                        {% endif %}
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ recipe.name }}</h5>
-                            <p>Description:</p>
-                            <p class="card-text">{{ recipe.description }}</p>
-                        </div>
-                        <div class="card-body">
-                            <p>Ingredients:</p>
-                            <p class="card-text">{{ recipe.ingredients }}</p>
-                        </div>
-                        <div class="card-body">
-                            <p>Directions:</p>
-                            <p class="card-text">{{ recipe.directions }}</p>
-                        </div>
-                        <div class="d-flex justify-content-between mx-3 mb-3">
-                            <div class="d-flex align-items-end">
-                                <small class="text-body-secondary ">Added: {{ recipe.date_created| date:"d M, Y H:i" }}</small>
-                            </div>
-                            <div>
-                                <form action="{% url 'recipes:toggle_favorite_ulr' recipe_id=recipe.id %}">
-                                    {% csrf_token %}
-                                    {% if recipe in user.favorite_recipes.all  %}
-                                        <button type="submit" class="btn btn-link p-0 m-0"><i class="fas fa-heart" style="color:red"></i></button>
-                                    {% else %}
-                                        <button type="submit" class="btn btn-link p-0 m-0"><i class="far fa-heart"></i></button>
-                                    {% endif %}
-                                </form>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
+        <div class="row g-0">
+            <div class="col-md-4">
+                {% if recipe.image %}
+                    <img width="100%" class="image-fluid rounded-start shadow" src="{{ recipe.image.url }}"
+                         alt="{{ recipe.name }}">
+                {% else %}
+                    <img width="100%" class="image-fluid rounded-start shadow"
+                         src="https://placehold.co/800?text=placeholder" alt="recipe">
+                {% endif %}
             </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.name }}</h5>
+                    <p>Description:</p>
+                    <p class="card-text">{{ recipe.description }}</p>
+                </div>
+                <div class="card-body">
+                    <p>Ingredients:</p>
+                    <p class="card-text">{{ recipe.ingredients }}</p>
+                </div>
+                <div class="card-body">
+                    <p>Directions:</p>
+                    <p class="card-text">{{ recipe.directions }}</p>
+                </div>
+                <div class="d-flex justify-content-between mx-3 mb-3">
+                    <div class="d-flex align-items-end me-auto">
+                        <small class="text-body-secondary ">Added: {{ recipe.date_created| date:"d M, Y H:i" }}</small>
+                    </div>
+                    <div class="me-3">
+                        <form action="{% url 'recipes:toggle_favorite_ulr' recipe_id=recipe.id %}">
+                            {% csrf_token %}
+                            {% if recipe in user.favorite_recipes.all %}
+                                <button type="submit" class="btn btn-link p-0 m-0"><i class="fas fa-heart"
+                                                                                      style="color:red"></i></button>
+                            {% else %}
+                                <button type="submit" class="btn btn-link p-0 m-0"><i class="far fa-heart"></i></button>
+                            {% endif %}
+                        </form>
+
+                    </div>
+                    <div class="me-3">
+                        <a href="{% url 'recipes:delete_recipe_ulr' recipe_id=recipe.id %}">Delete</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'recipes:edit_recipe_ulr' recipe_id=recipe.id %}">Edite</a>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <div class="mt-4">
-    <h5>Comments:</h5>
+        <h5>Comments:</h5>
         {% for comment in  comments %}
-        	<div class="border p-3 mb-3 rounded">
+            <div class="border p-3 mb-3 rounded">
                 <div class="d-flex align-items-center mb-2">
-             {% if user.profile.profile_photo %}
-                 <img src="{{ user.profile.profile_photo.url }}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 5px">
-             {% endif %}
-                <div>
-                    <strong>{{ comment.user.username }}</strong>
-                    Commented on {{ comment.date_created|date:"F d, Y" }} at {{ comment.date_created|time:"H:i" }}:
-                    <br>
-                    <p class="fst-italic">"{{ comment.text }}"</p>
+                    {% if user.profile.profile_photo %}
+                        <img src="{{ user.profile.profile_photo.url }}" alt="Profile"
+                             style="width: 40px; height: 40px; border-radius: 50%; margin-right: 5px">
+                    {% endif %}
+                    <div>
+                        <strong>{{ comment.user.username }}</strong>
+                        Commented on {{ comment.date_created|date:"F d, Y" }} at {{ comment.date_created|time:"H:i" }}:
+                        <br>
+                        <p class="fst-italic">"{{ comment.text }}"</p>
+                    </div>
                 </div>
-            </div>
             </div>
         {% empty %}
             No comment yet.
         {% endfor %}
     </div>
     <!-- Comment Form   -->
-{% if user.is_authenticated %}
-    <h5>Leave comment:</h5>
-    <form method="post">
-        {% csrf_token %}
-        {{ comment_form.as_div }}
-        <div class="mt-2">
-            <button type="submit" class="btn btn-primary">Add Commite</button>
-        </div>
-    </form>
-{% else %}
-    <p><a href="{% url 'accounts:login' %}">Log in</a> to post a comment</p>
-{% endif %}
+    {% if user.is_authenticated %}
+        <h5>Leave comment:</h5>
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_div }}
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary">Add Commite</button>
+            </div>
+        </form>
+    {% else %}
+        <p><a class="btn btn-success" href="{% url 'accounts:login' %}">Log in</a> to post a comment</p>
+    {% endif %}
 {% endblock content %}
 

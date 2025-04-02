@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 
 from comments.forms import CommentForm
@@ -71,4 +72,41 @@ def toggle_favorite(request, recipe_id):
     else:
         recipe.favorited_by.add(request.user)
     return redirect("recipes:recipe_detail_ulr", recipe_id=recipe_id)
+
+@login_required
+def my_favorite_recipes(request):
+
+    user = request.user
+    favorites = user.favorite_recipes.all()
+    return render(request,"recipes/my_favorites.html", {'favorites': favorites})
+
+@login_required
+def delete_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipes, id=recipe_id)
+    if not request.user == recipe.user and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    if request.method == "POST":
+        recipe.delete()
+        return redirect('foodie_app:recipes-category-ulr', category_id=recipe.category.id)
+
+    return render(request, "recipes/recipe_confirmation_delete.html", {'recipe': recipe})
+
+
+@login_required
+def edit_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipes, id=recipe_id)
+
+    if not request.user == recipe.user and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    if request.method == "POST":
+        form = RecipeForm(data=request.POST, files=request.FILES, instance=recipe)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect("recipes:recipe_detail_ulr", recipe_id=recipe_id)
+    else:
+        form = RecipeForm(instance=recipe)
+    return render(request, "recipes/edit_recipe.html", {'recipe': recipe, 'form': form})
+
 

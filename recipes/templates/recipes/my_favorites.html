@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block page_header %}
-    <h5>Recipe</h5>
+    <h5>My favorite recipes</h5>
 {% endblock page_header %}
 
 {% block content %}
     <div>
-        {% for recipe in recipes %}
+        {% for recipe in favorites %}
             <div class="card mb-3 mx-auto" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-4">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-
+            
         {% endfor %}
     </div>
 {% endblock content %}

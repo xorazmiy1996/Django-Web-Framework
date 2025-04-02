@@ -34,12 +34,15 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav  my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link active" href="{% url 'foodie_app:add-recipe-with-ulr' %}">Add recipe</a>#}
-                {#                </li>#}
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'recipes:recipes_ulr' %}">All
+                    <a class="btn btn-outline-success me-2" href="{% url 'foodie_app:add-recipe-ulr' %}">Add recipe</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-success me-2" aria-current="page" href="{% url 'recipes:recipes_ulr' %}">All
                         recipes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-success " aria-current="page" href="{% url 'recipes:my_favorite_recipes_ulr' %}">My Favorite</a>
                 </li>
             </ul>
 

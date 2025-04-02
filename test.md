@@ -2835,15 +2835,19 @@ Agar siz `.venv` papkasini faollashtirgan bo'lsangiz, lekin `pip` buyruqlari ish
     </head>
        ...
     ```  
+### 118. `HttpResponseForbidden()`  nima uchun ishlatilinadi?
 
-
+> `HttpResponseForbidden()` Django da foydalanuvchining ma'lum bir resursga kirish huquqi yo'qligini ko'rsatish uchun ishlatiladi. Bu, odatda, foydalanuvchi resursni o'chirish yoki ko'rish uchun ruxsatga ega emasligini bildiradi.
     
+- Foydalanuvchi tizimga kirgan bo'lsa ham, u resursning egasi emas.
+- Foydalanuvchi `super` foydalanuvchi `(admin)` emas.
+
+> Bu holatda, `server` foydalanuvchiga `403` Forbidden xatosini qaytaradi, bu esa foydalanuvchiga resursga kirish huquqi yo'qligini bildiradi. 
 
 
+### 119. `request.user.is_superuser` nimani bildiradi?
 
-
-
-
+> `request.user.is_superuser` Django da foydalanuvchining `superuser` (boshqaruvchi) ekanligini tekshirish uchun ishlatiladi. Agar bu qiymat `True` bo'lsa, demak foydalanuvchi `superuser` hisoblanadi va u barcha ruxsatlarga ega. 
 
 
 
