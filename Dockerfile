@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Django serverini ishga tushirish
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "foodie.wsgi:application"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
