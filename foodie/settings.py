@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from urllib.parse import urlparse
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,11 +85,27 @@ WSGI_APPLICATION = 'foodie.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+
+# .env faylini yuklash
+load_dotenv()
+
+print("Database Name:", os.getenv('DATABASE_NAME'))
+
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DATABASE_NAME'),          # Yaratilgan ma'lumotlar bazasi nomi
+        'USER': os.getenv('DATABASE_USER'),        # Yaratilgan foydalanuvchi nomi
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),   # Foydalanuvchining paroli
+        'HOST': os.getenv('DATABASE_HOST'),           # Agar PostgreSQL lokal serverda bo'lsa
+        'PORT': os.getenv('DATABASE_PORT'),                    # Standart port 5432
     }
 }
 

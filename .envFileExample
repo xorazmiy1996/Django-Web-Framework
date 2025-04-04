@@ -1,0 +1,8 @@
+
+# .env  fail ichida quydagilar bo'lishi shart
+
+DATABASE_NAME=foodie
+DATABASE_USER=postgres
+DATABASE_PASSWORD=1996
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
