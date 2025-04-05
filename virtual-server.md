@@ -385,7 +385,88 @@ echo "Container nomi: $CONTAINER_NAME"
 
 > Bu buyruqni doimo ishlating — serverda nima bo'layotganini tushunish uchun asosiy vositalardan biri.
 
+### 7. `drwxrwxr-x` ushbu huquqni tushuntirib bering:
 
+> `drwxrwxr-x` — bu Linux fayl tizimidagi **papka huquqlarini** ifodalovchi kod. Keling, uni qismlarga ajratib tushuntiraman:
+
+---
+
+   1. **Birinchi belgi: Fayl turi**
+      - `d` — bu **papka** (directory)  
+        (Agar `-` bo'lsa — oddiy fayl, `l` bo'lsa — simvolik havola)
+
+---
+
+   2. **Keyingi 9 ta belgi: 3 guruhdagi huquqlar**
+
+   Har bir 3 belgi bir guruh huquqlarini ko'rsatadi:
+
+   #### a) **Egasi (owner) huquqlari** (`rwx`):
+   - `r` (read) — papkani ochish va tarkibini ko'rish  
+   - `w` (write) — papkada yangi fayl yaratish/o'chirish  
+   - `x` (execute) — papkaga kirish (cd qilish)
+
+   #### b) **Guruh (group) huquqlari** (`rwx`):
+   - Aynan egasi huquqlari kabi, lekin faqat ushbu guruh a'zolari uchun
+
+   #### c) **Boshqalar (others) huquqlari** (`r-x`):
+   - `r` — tarkibni ko'rish  
+   - `-` — yozish huquqi yo'q  
+   - `x` — papkaga kirish
+
+---
+
+   ### **3. Butun strukturani vizualizatsiya:**
+   ```
+   d rwx rwx r-x
+   │ │││ │││ │││
+   │ └┬┘ └┬┘ └┬┘
+   │  │   │   └─ Boshqalar (others) huquqlari
+   │  │   └───── Guruh (group) huquqlari
+   │  └───────── Egasi (owner) huquqlari
+   └──────────── Fayl turi (papka)
+   ```
+
+---
+   
+   ### **4. Misol holatlar:**
+   1. **Foydalanuvchi (owner)**:
+      - Papkaga kirishi (`x`)  
+      - Ichida yangi fayl yaratishi (`w`)  
+      - `ls` qilishi (`r`)
+   
+   2. **Guruh a'zosi**:
+      - Xuddi shu huquqlar (chunki `rwx`)
+   
+   3. **Boshqa har kim**:
+      - Kirishi va fayllarni ko'rishi (`r-x`), lekin  
+      - Yangi fayl yaratolmaydi (`w` yo'q)
+
+---
+
+   ### **5. Bu huquqlar qayerda ko'riladi?**
+   - **Docker** loyihalarida: `chmod -R 775 papka_nomi` buyrug'i aynan shu huquqlarni beradi  
+   - **Web server** papkalarida (masalan, `/var/www`)  
+   - **Foydalanuvchilar** uchun umumiy ishlash papkalarida
+
+---
+
+   ### **6. Xavfsizlik nuqtai nazaridan:**
+   - `rwxrwxr-x` (775) — ko'p hollarda xavfsiz, chunki:
+   - Boshqalar faqat o'qish/kirish huquqiga ega  
+   - Yozish faqat egasi va guruh a'zolariga berilgan
+
+   - **Xavfli holat**: Agar papkada `rwxrwxrwx` (777) ko'rsa — bu hamma uchun to'liq ruxsat berilganligini anglatadi!
+
+---
+
+   ### **7. Huquqlarni o'zgartirish:**
+   ```bash
+      chmod 775 papka_nomi  # shu huquqlarni qo'llash uchun
+      chown user:group papka_nomi  # egasini o'zgartirish
+   ```
+
+   Agar loyihangizda permission xatolari bo'lsa, aynan shu huquqlarni `ls -la` bilan tekshiring! 🔍
 
 
 
