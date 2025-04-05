@@ -110,6 +110,61 @@
 > `Migratsiya` buyruqlarini `Dockerfile` ga emas, balki `container` ishga tushganda bajariladigan qismga
 `(command/entrypoint)` qo'ying. Bu sizga moslashuvchanlik va ishonchlilik beradi.
 
+### 2. `virtual server` ga `docker` qanday o'rnatiladi?
+
+> `Docker` o'rnatish jarayoni odatda terminal (`SSH` yoki `lokal terminal`) orqali amalga oshiriladi. Bunday holatda sizning terminalingiz ochiq bo'lishi kerak va tizim` administratori (root)` yoki `sudo` huquqlariga ega foydalanuvchi hisobidan foydalanishingiz lozim.
+
+Qanday qilib terminalni ochish kerak:
+
+1. `SSH` **orqali ulanish** (agar siz remote serverda bo'lsangiz)
+   - Terminal (`Linux` yoki `MacOS` uchun) `yoki` `PuTTY` yoki `MobaXterm` (Windows uchun) dasturlaridan foydalaning.
+   
+   - `SSH` orqali serverga ulaning:
+
+      ```shell
+      ssh username@ip_address
+      ```
+   - `username` o'rniga serverda foydalanuvchi nomingizni, `ip_address` o'rniga serveringizning `IP` manzilini yozing.
+
+2. **Lokal tizimda terminal ochish** (agar siz lokal tizimda ishlayotgan bo'lsangiz):
+
+   - `Linux`: Klaviaturadan `Ctrl + Alt + T` tugmalarini bosib terminalni oching.
+   - `MacOS`: `Terminal` ilovasini qidirib oching.
+   - `Windows`: `Command Prompt` yoki `PowerShell` yoki Windows Subsystem for Linux (WSL) dan foydalaning.
+
+**Docker o'rnatish buyruqlari:**
+
+```shell
+      # 1. Tizim paketlarini yangilash
+      sudo apt update
+      sudo apt upgrade
+      
+      # 2. Zarur paketlarni o'rnatish
+      sudo apt install apt-transport-https ca-certificates curl software-properties-common
+      
+      # 3. Docker GPG kalitini qo'shish
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      
+      # 4. Docker repository'sini qo'shish
+      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      
+      # 5. Yangilanishlar mavjudligini tekshirish
+      sudo apt update
+      
+      # 6. Docker'ni o'rnatish
+      sudo apt install docker-ce
+      
+      # 7. Docker holatini tekshirish
+      sudo systemctl status docker
+      
+      # 8. Agar kerak bo'lsa, foydalanuvchini 'docker' guruhiga qo'shish
+      sudo usermod -aG docker $USER
+      
+      # 9. Docker o'rnatishni sinovdan o'tkazish
+      docker run hello-world
+```
+> `Docker` o'rnatish jarayonida yuqorida keltirilgan buyruqlarni terminalda amalga oshirishingiz kerak. Har doim administrator huquqlaridan foydalanishni unutmang (`sudo` bilan).
+
 
 
 
