@@ -187,16 +187,91 @@ Agar siz `developer` nomli foydalanuvchini yaratmoqchi bo'lsangiz, quyidagi buyr
     ```
     `Eslatma`:
     - `su` - (tire bilan) foydalanuvchi muhitini to'liq yuklaydi
+      1. Yangi login shell yaratiladi
+      2. Foydalanuvchining `.bashrc`, `.profile` fayllari ishga tushiriladi
+      3. `HOME` papkasi yangilanadi (/home/muhammad)
+      4. `PATH` o'zgaruvchisi yangilanadi
+         ```shell
+         root@server:~# su - muhammad
+         muhammad@server:~$ echo $HOME
+          # To'g'ri yangilangan
+         ```
     - `su` (tiresiz) esa faqat hisobga o'tadi, muhitni yangilamaydi
+      1. Faqat foydalanuvchi o'zgartiradi
+      2. Oldingi foydalanuvchining muhiti saqlanib qoladi
+      3. `HOME` papkasi o'zgarmaydi
+      4. `.bashrc` ishga tushmaydi
+         ```shell
+         root@server:~# su - muhammad
+         muhammad@server:~$ echo $HOME
+          # To'g'ri yangilangan
+         ```
+      - `echo $HOME`:
+        - Bu tizim o'zgaruvchisi (environment variable) bo'lib, har bir foydalanuvchi uchun:
+          - Linux/Mac: `/home/foydalanuvchi_nomi` (masalan, /home/muhammad)
+          - Windows (WSL): `/home/foydalanuvchi_nomi`
+          - Root foydalanuvchi uchun: `/root`
 
 2. **Foydalanuvchi hisobini tekshirish**
 
+   ```shell
+   whoami  # Hozirgi foydalanuvchi nomini ko'rsatadi
+   pwd     # Joriy ish papkasini ko'rsatadi
+   ```
+### 5. `echo` nima?
 
+> `echo` — bu `Linux/Mac` terminalida matn yoki o‘zgaruvchilarni ekranga chiqarish uchun ishlatiladigan asosiy buyruq. Uning vazifasi siz ko‘rsatgan ma’lumotni terminal oynasida ko‘rsatishdir.
 
+1.  **Asosiy ishlatilishi**
 
+    ```shell
+    echo "Salom, Dunyo!"  # Tekstni chiqaradi
+    ```
+    **Natija:**
+    ```
+    Salom, Dunyo!
+    ```
+2. **O‘zgaruvchilar bilan ishlash**
 
+    ```shell
+    ism="Ali"
+    echo "Mening ismim $ism"  # O‘zgaruvchini qiymatini chiqaradi
+    ```
+   **Natija:**
+    ```
+    Mening ismim Ali
+    ```
+3. **Faylga yozish (>> yoki >)**
 
+    ```shell
+    echo "Bu yangi matn" > fayl.txt  # Faylga yozadi (eski mazumni o‘chiradi)
+    echo "Qo‘shimcha matn" >> fayl.txt  # Fayl oxiriga qo‘shadi
+    ```   
+4. **Maxsus belgilar**
 
+    ```shell
+    echo -e "Birinci qator\nIkkinchi qator"  # \n yangi qator uchun
+    ```
+   **Natija:**
+    ```
+    Birinci qator
+    Ikkinchi qator
+    ```
+5. **Foydali misollar**
+
+    - **a) Fayl yaratish:**
+      ```shell
+      echo "#!/bin/bash" > script.sh  # Skript boshlanishi
+      ```
+    - **b) O‘zgaruvchilarni tekshirish:**
+      ```shell
+      echo $PATH  # Tizim yo‘llarini ko‘rsatadi
+      ```
+    - **c) Matnni boshqa buyruqqa uzatish:**
+      ```shell
+      echo "123" | wc -c  # Belgilar sonini hisoblaydi
+      ```
+6. **Qo‘shimcha variantlar**
 
 
 
