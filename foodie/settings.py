@@ -101,11 +101,11 @@ print("Database Name:", os.getenv('DATABASE_NAME'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME'),          # Yaratilgan ma'lumotlar bazasi nomi
-        'USER': os.getenv('DATABASE_USER'),        # Yaratilgan foydalanuvchi nomi
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),   # Foydalanuvchining paroli
-        'HOST': os.getenv('DATABASE_HOST'),           # Agar PostgreSQL lokal serverda bo'lsa
-        'PORT': os.getenv('DATABASE_PORT'),                    # Standart port 5432
+        'NAME': os.getenv('POSTGRES_DB'),             # Yaratilgan ma'lumotlar bazasi nomi
+        'USER': os.getenv('POSTGRES_USER'),           # Yaratilgan foydalanuvchi nomi
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),   # Foydalanuvchining paroli
+        'HOST': os.getenv('POSTGRES_HOST'),           # Agar PostgreSQL lokal serverda bo'lsa
+        'PORT': os.getenv('POSTGRES_PORT','5432'),    # Standart port 5432
     }
 }
 
