@@ -2,57 +2,57 @@
 
 1. **Fayl va kataloglar bilan ishlash**
     - **Katalogni ko'rish:**
-        ```python
+        ```shell
         ls
         ```
 
     - **Joriy katalogni ko'rish:**
-        ```python
+        ```shell
         pwd
         ```
 
     - **Katalog yaratish:**
-        ```python
+        ```shell
         mkdir katalog_nomi
         ```
 
     - **Fayl yoki katalogni o'chirish:**
-        ```python
+        ```shell
         rm fayl_nomi
         ```
         **yoki katalog uchun:**
     
-        ```python
+        ```shell
         rm -r katalog_nomi
         ```
 
 2. **Fayllarni ko'rish va tahrirlash**
 
     - **Faylni ko'rish:**
-        ```python
+        ```shell
         cat fayl_nomi
         ```
     - **Faylni tahrirlash** (nano yoki vim editorlaridan biri yordamida):
-        ```python
+        ```shell
         nano fayl_nomi
         ```
         **yoki**  
    
-        ```python
+        ```shell
         vim fayl_nomi
         ```
 3. **Tizim va jarayonlar bilan ishlash**
     
     - **Tizim holatini ko'rish:**
-        ```python
+        ```shell
         top
         ```
     - **Jarayonni to'xtatish:**
-        ```python
+        ```shell
         kill jarayon_id
         ```
     - **Jarayonlar ro'yxatini ko'rish:**
-        ```python
+        ```shell
         ps aux
         ```
 
@@ -60,12 +60,12 @@
 4. **O'rnatish va yangilash**
     
     - **Dastur o'rnatish** (Ubuntu/Debian misolida):
-        ```python
+        ```shell
         sudo apt update
         sudo apt install dastur_nomi
       ```
     - **Dasturlarni yangilash:**
-        ```python
+        ```shell
         sudo apt upgrade
         ```
 
@@ -74,27 +74,27 @@
 5. **Tarmoq buyruqlari**
     
     - **IP manzilini ko'rish:**
-        ```python
+        ```shell
         ifconfig
         ```
       **yoki**
 
-        ```python
+        ```shell
         ip a
         ```
     - **Tarmoqning ping-ni tekshirish:**
-        ```python
+        ```shell
         ping -c 4 www.example.com
         ```
 
 6. **Foydalanuvchilar bilan ishlash**
     
     - **Foydalanuvchilar ro'yxatini ko'rish:**
-        ```python
+        ```shell
         cat /etc/passwd
         ```
     - **Yangi foydalanuvchi qo'shish:**
-        ```python
+        ```shell
         sudo adduser yangi_foydalanuvchi
         ```
   
@@ -102,11 +102,11 @@
 7. **Xavfsizlik va ruxsatlar**
     
     - **Fayl ruxsatlarini ko'rish:**
-        ```python
+        ```shell
         ls -l fayl_nomi
         ```
     - **Ruxsatlarni o'zgartirish:**
-        ```python
+        ```shell
         chmod 755 fayl_nomi
         ```
    > Bu buyruqlar sizga `virtual server` da ishlashda yordam beradi. Har bir buyruqni ehtiyotkorlik bilan ishlating va muhim fayllarni o'zgartirishdan oldin zaxira olishni unutmang.
@@ -117,7 +117,7 @@
 
 1. **Terminalga kiring:** Virtual serverga `SSH` orqali kiring. Buning uchun terminaldan foydalaning:
 
-   ```python
+   ```shell
    ssh username@ip_address
    ```
 2. **Yangi foydalanuvchini yaratish:**
@@ -126,13 +126,13 @@
 
    **Misol uchun:**
 
-   ```python
+   ```shell
    sudo adduser yangi_foydalanuvchi
    ```
    Yoki `useradd` buyruqdan foydalanish:
 
-   ```python
-   sudo useradd -m yangi_foydalanuvchi
+   ```shell
+      sudo useradd -m yangi_foydalanuvchi
    ```
    `-m` flagi yangi foydalanuvchi uchun uy katalogini yaratadi.
 
@@ -140,7 +140,7 @@
 
    > `adduser` buyruği avtomatik ravishda foydalanuvchining parolini so'raydi. Agar useradd buyruqidan foydalangan bo'lsangiz, foydalanuvchining parolini belgilash uchun quyidagi buyruqni bajarishingiz kerak:
 
-   ```python
+   ```shell
    sudo passwd yangi_foydalanuvchi
    ```
    > Yuqoridagi buyruqdagi `passwd` o'rniga o'zingizning yangi passwordingizn yozmang chungi bu hato, bu yerda `passwd ` kalit so'z hisoblanadi. Bu buyruqda siz `yangi_foydalanuvchi` o'rniga `useradd` orqali yaratilgan foydalanuvchini kiritasiz va `enter` tugmasini bosasiz. Shundan so'ng sizdan yangi foydalanuvchi uchun password kiritishni so'raladi.  
@@ -151,7 +151,7 @@
 
    > Agar foydalanuvchini biror guruhga kiritsangiz (masalan, `sudo` guruhiga, agar uni `administrator` qilishni xohlasangiz), quyidagi buyruqni bajarishingiz mumkin:
 
-   ```python
+   ```shell
    sudo usermod -aG sudo yangi_foydalanuvchi
    ```
 5. **Foydalanuvchini yaratish jarayonini yakunlash:**
@@ -162,10 +162,10 @@
 
 Agar siz `developer` nomli foydalanuvchini yaratmoqchi bo'lsangiz, quyidagi buyruqlarni bajarishingiz mumkin:
 
-```python
-sudo adduser developer
-# Parolni kiritish
-sudo usermod -aG sudo developer  # Agar uni administrator qilishni xohlasangiz
+```shell
+   sudo adduser developer
+   # Parolni kiritish
+   sudo usermod -aG sudo developer  # Agar uni administrator qilishni xohlasangiz
 ```
 
 ### 3. `virtual server` ga kiradigan `root foydalanuchisi` bilan va yangi yaratilgan   `yangi_foydalanuvchi` foydalanuvchi o'rtasidagi farqlar ni tushuntirib bering.
@@ -190,7 +190,7 @@ Qanday qilib terminalni ochish kerak:
    
    - `SSH` orqali serverga ulaning:
 
-      ```python
+      ```shell
       ssh username@ip_address
       ```
    - `username` o'rniga serverda foydalanuvchi nomingizni, `ip_address` o'rniga serveringizning `IP` manzilini yozing.
@@ -203,34 +203,34 @@ Qanday qilib terminalni ochish kerak:
 
 **Docker o'rnatish buyruqlari:**
 
-```python
-# 1. Tizim paketlarini yangilash
-sudo apt update
-sudo apt upgrade
-
-# 2. Zarur paketlarni o'rnatish
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
-
-# 3. Docker GPG kalitini qo'shish
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-# 4. Docker repository'sini qo'shish
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
-# 5. Yangilanishlar mavjudligini tekshirish
-sudo apt update
-
-# 6. Docker'ni o'rnatish
-sudo apt install docker-ce
-
-# 7. Docker holatini tekshirish
-sudo systemctl status docker
-
-# 8. Agar kerak bo'lsa, foydalanuvchini 'docker' guruhiga qo'shish
-sudo usermod -aG docker $USER
-
-# 9. Docker o'rnatishni sinovdan o'tkazish
-docker run hello-world
+```shell
+      # 1. Tizim paketlarini yangilash
+      sudo apt update
+      sudo apt upgrade
+      
+      # 2. Zarur paketlarni o'rnatish
+      sudo apt install apt-transport-https ca-certificates curl software-properties-common
+      
+      # 3. Docker GPG kalitini qo'shish
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      
+      # 4. Docker repository'sini qo'shish
+      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      
+      # 5. Yangilanishlar mavjudligini tekshirish
+      sudo apt update
+      
+      # 6. Docker'ni o'rnatish
+      sudo apt install docker-ce
+      
+      # 7. Docker holatini tekshirish
+      sudo systemctl status docker
+      
+      # 8. Agar kerak bo'lsa, foydalanuvchini 'docker' guruhiga qo'shish
+      sudo usermod -aG docker $USER
+      
+      # 9. Docker o'rnatishni sinovdan o'tkazish
+      docker run hello-world
 ```
 > `Docker` o'rnatish jarayonida yuqorida keltirilgan buyruqlarni terminalda amalga oshirishingiz kerak. Har doim administrator huquqlaridan foydalanishni unutmang (`sudo` bilan).
 
@@ -242,7 +242,7 @@ docker run hello-world
 
 >  `PostgreSQL` o'rnatish jarayoni odatda terminal (`SSH` yoki `lokal terminal`) orqali amalga oshiriladi. Bunday holatda sizning terminalingiz ochiq bo'lishi kerak va tizim` administratori (root)` yoki `sudo` huquqlariga ega foydalanuvchi hisobidan foydalanishingiz lozim.
 
-```python
+```shell
 #  1. Tizim paketlarini yangilash
 sudo apt update
 sudo apt upgrade
@@ -280,7 +280,7 @@ sudo systemctl status postgresql
 
 > `Django` loyhasi uchun `PostgreSQL` adapterini o'rnatish kerak. Virtual muhit `(venv)` ichida quyidagi buyruqni bajarish orqali `psycopg2` o'rnatiladi:
 
-```python
+```shell
 pip install psycopg2-binary
 ```
  **Django sozlamalarini yangilash**
@@ -301,9 +301,9 @@ DATABASES = {
 ```
 **Migratsiyalarni amalga oshirish**
 
-   ```
-   python manage.py makemigrations
-   python manage.py migrate   
+   ```shell
+      python manage.py makemigrations
+      python manage.py migrate   
    ```
 
 **Django serverini ishga tushirish**
