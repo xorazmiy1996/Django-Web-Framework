@@ -460,7 +460,7 @@ echo "Container nomi: $CONTAINER_NAME"
 
 ---
 
-   ### **7. Huquqlarni o'zgartirish:**
+   7. **Huquqlarni o'zgartirish:**
    ```bash
       chmod 775 papka_nomi  # shu huquqlarni qo'llash uchun
       chown user:group papka_nomi  # egasini o'zgartirish
@@ -468,7 +468,20 @@ echo "Container nomi: $CONTAINER_NAME"
 
    Agar loyihangizda permission xatolari bo'lsa, aynan shu huquqlarni `ls -la` bilan tekshiring! 🔍
 
+### 8. Barcha muhit o'zgaruvchilarini ko'rish `server` da:
 
+
+   ```shell
+      env
+      printenv
+   ```
+   Boshqa foydali o'zgaruvchilar:
+
+   ```shell
+      echo $USER   # Foydalanuvchi nomi
+      echo $PWD    # Joriy papka
+      echo $PATH   # Dastur izlash yo'llari
+   ```
 
 
 
