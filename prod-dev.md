@@ -279,17 +279,32 @@ Keling, Django loyihasida `development` (ishlab chiqish) va `production` (ishlas
 7. **Misol loyiha tuzilmasi**
 
     ```
-    myproject/
-    ├── .env.dev
-    ├── .env.prod
-    ├── manage.py
+    myproject/ 
     ├── myproject/
     │   ├── settings/
     │   │   ├── __init__.py
     │   │   ├── base.py
     │   │   ├── dev.py
     │   │   └── prod.py
-    │   └── urls.py
+    │   ├── urls.py
+    │   └── wsgi.py             # WSGI interfeysi
+    ├── myapp/                  # Django ilovasi (app)
+    │   ├── migrations/         # Ma'lumotlar bazasi migratsiyalari
+    │   ├── templates/          # Shablonlar
+    │   │   └── myapp/         # Ilovaga tegishli shablonlar
+    │   ├── static/             # Statik fayllar (CSS, JavaScript, rasmlar)
+    │   ├── __init__.py
+    │   ├── admin.py            # Admin interfeysi konfiguratsiyasi
+    │   ├── apps.py             # Ilova konfiguratsiyasi
+    │   ├── models.py           # Ma'lumotlar bazasi modellari
+    │   ├── tests.py            # Testlar
+    │   └── views.py            # Ko'rinishlar (views)   
+    │ 
+    ├── manage.py
+    │
+    ├── .env.dev
+    ├── .env.prod
+    │
     └── requirements.txt
     ```
    `Bu usul bilan siz`:
