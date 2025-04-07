@@ -122,7 +122,7 @@ Siz restoranga keldingiz (`veb-server` - masalan, Nginx). Ofitsiant (`WSGI`) siz
    **Qisqacha:**
    - **WSGI** = "Qanday qilish kerak" qo'llanmasi
    - **Gunicorn** = Shu qo'llanmaga amal qiluvchi ishchi
-
+ 
 
 
 
