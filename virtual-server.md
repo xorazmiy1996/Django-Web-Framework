@@ -482,9 +482,203 @@ echo "Container nomi: $CONTAINER_NAME"
       echo $PWD    # Joriy papka
       echo $PATH   # Dastur izlash yo'llari
    ```
+### 9. Docker-based `Django` + `Gunicorn` + `Nginx` Sozlash (Virtual Serverda)
 
 
+#### **1. Dockerfile Yangilash**
+```dockerfile
+# myproject/Dockerfile
+FROM python:3.9-slim
 
+WORKDIR /app
+
+# Virtual muhit yaratish
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Dependensiyalarni o'rnatish
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Loyiha fayllarini nusxalash
+COPY . .
+
+# Statik fayllarni yig'ish
+RUN python manage.py collectstatic --noinput
+
+# Gunicorn ishga tushirish
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "myproject.wsgi:application"]
+```
+
+#### **2. docker-compose.yml Yangilash**
+```yaml
+# myproject/docker-compose.yml
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/staticfiles
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:
+```
+
+#### **3. Nginx Konfiguratsiyasi (nginx.conf)**
+```nginx
+# myproject/nginx.conf
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream django {
+        server web:8000;
+    }
+
+    server {
+        listen 80;
+        server_name example.com;
+
+        location / {
+            proxy_pass http://django;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+        location /static/ {
+            alias /app/staticfiles/;
+            expires 30d;
+        }
+
+        location /media/ {
+            alias /app/media/;
+            expires 30d;
+        }
+    }
+}
+```
+
+#### **4. Environment Sozlamalari (.env)**
+```ini
+# myproject/.env
+DEBUG=0
+SECRET_KEY=your-secret-key
+ALLOWED_HOSTS=example.com,localhost,127.0.0.1
+DATABASE_NAME=myproject
+DATABASE_USER=myuser
+DATABASE_PASSWORD=mypassword
+```
+
+#### **5. Ishga Tushirish Qadamlari**
+```bash
+# 1. Loyihani serverga yuklash
+cd /home/muhammad
+git clone https://github.com/your-repo/myproject.git
+cd myproject
+
+# 2. Huquqlarni sozlash
+sudo chown -R muhammad:muhammad /home/muhammad/myproject
+
+# 3. Docker-compose orqali ishga tushirish
+docker-compose up -d --build
+
+# 4. Ma'lumotlar bazasini migratsiya qilish
+docker-compose exec web python manage.py migrate
+
+# 5. Superuser yaratish
+docker-compose exec web python manage.py createsuperuser
+
+# 6. Tekshirish
+curl http://localhost
+```
+
+#### **6. Muhim Sozlamalar**
+1. **settings.py**:
+```python
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+```
+
+2. **Production uchun optimallashtirish**:
+```dockerfile
+# Dockerfile'ga qo'shing
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+```
+
+#### **7. Xatoliklar va Tekshiruv**
+```bash
+# Loglarni ko'rish
+docker-compose logs -f web
+docker-compose logs -f nginx
+
+# Container ichiga kirish
+docker-compose exec web bash
+
+# Nginx test
+docker-compose exec nginx nginx -t
+```
+
+#### **8. HTTPS Sozlash (Certbot)**
+```bash
+# Nginx containerini to'xtatish
+docker-compose stop nginx
+
+# Certbotni ishga tushirish
+sudo certbot certonly --standalone -d example.com
+
+# Nginx configini yangilash (ssl qo'shing)
+# Keyin qayta ishga tushirish
+docker-compose up -d nginx
+```
+
+### **Yakuniy Tekshiruvlar**
+1. `https://example.com` ishlayotganligini tekshiring
+2. Admin panel (`/admin`) ishlashi
+3. Static fayllar yuklanishi
+4. `DEBUG=False` da xatolik sahifasi ishlashi
+
+Bu sozlash sizga:
+- ✅ Docker containerlarida izolyatsiya qilingan muhit
+- ✅ Nginx bilan optimallashtirilgan yuk balansi
+- ✅ PostgreSQL bilan ishlaydigan production-ready tizim
+- ✅ Avtomatik qayta ishga tushirish (restart: unless-stopped)
 
 
 
