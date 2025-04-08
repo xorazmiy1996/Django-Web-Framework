@@ -1,6 +1,4 @@
-### 1. `Django` loyihasini `Dockerfile` orqlai ishga tushurganda `makemigrations` va
-
-`migrate` qilish bo'yicha muommo chiqishi mumkin.
+### 1. `Django` loyihasini `Dockerfile` orqlai ishga tushurganda `makemigrations` va `migrate` qilish bo'yicha muommo chiqishi mumkin.
 
 > Bunga sabab `python manage.py makemigrations` va `python manage.py migrate` buyruqlarini `Dockerfile` da
 > joylashtirilgan bo'lishim mumkin.
@@ -165,12 +163,37 @@ Qanday qilib terminalni ochish kerak:
 ```
 > `Docker` o'rnatish jarayonida yuqorida keltirilgan buyruqlarni terminalda amalga oshirishingiz kerak. Har doim administrator huquqlaridan foydalanishni unutmang (`sudo` bilan).
 
+3. `server` da `docker` o'chib qolsa uni qanday yoqsa bo'ladi.
 
+Agar sizning `Docker` serveringiz `o'chib qolgan` yoki ishlamayotgan bo'lsa, uni qayta yoqish uchun quyidagi qadamlarni bajarishingiz mumkin:
 
+1.  **Docker xizmatini ishga tushirish**
 
+      > `Docker` xizmatini yoqish uchun quyidagi buyruqlarni bajaring. Tizimingizga qarab, buyruqlar farq qilishi mumkin.
 
+      **Systemd (`Debian/Ubuntu` yoki `RHEL/CentOS` so'nggi versiyalari uchun)**
 
+      ```bash
+      sudo systemctl start docker
+      ```
+      ```bash
+       Va Docker xizmatining holatini tekshirish uchun:
+      ```
+      > Agar xizmat muvaffaqiyatli ishga tushgan bo'lsa, `active (running)` holatini ko'rishingiz kerak.
+     
+2. `Docker` **xizmatini** `avtomatik` **ishga tushirishga sozlash**:
+      ```bash
+      sudo systemctl enable docker
+      ```
+3.  **Docker logs**:
+      ```bash
+      sudo journalctl -u docker
+      ```
+      Yoki aynan konkret konteyner loglarini ko'rish uchun
 
+      ```bash
+      sudo docker logs <container_id_or_name>
+      ```
 
 
 

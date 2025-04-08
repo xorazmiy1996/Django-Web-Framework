@@ -1,6 +1,12 @@
 ### 1. `virtual server` ga kirgandan so'ng eng ko'p ishlatiladigan asosiy buyruqlar.
 
 1. **Fayl va kataloglar bilan ishlash**
+
+    - virtual serverdagi terminalni bash ga o'zgartirish.
+         ```bash
+           sudo chsh -s /usr/bin/bash
+         ```
+      - Bu buyruqni bajargandan so'ng paychar ni `restart` qiling. Terminal shunda o'zgaradi.
     - **Katalogni ko'rish:**
         ```shell
         ls
@@ -482,7 +488,164 @@ echo "Container nomi: $CONTAINER_NAME"
       echo $PWD    # Joriy papka
       echo $PATH   # Dastur izlash yo'llari
    ```
-### 9. Docker-based `Django` + `Gunicorn` + `Nginx` Sozlash (Virtual Serverda)
+
+### 9.  Yangi foydalanuvchiga `sudo` huquqini berish (rootda bo'lganda).
+   ```bash
+       usermod -aG sudo muhammad
+   ```
+   > `Terminal` ni yopib, yangidan oching va yangi foydalanuchi serverga kirib `sudo apt update` buyruqini tekshiring agarda hech qanday hatolik kuzatilmasa `sudo` huquqi yangi foydalanuvchiga  muvoffaqiyatli qo'shilgan bo'ladi. Agarda hotolik bo'lsa kompyuter ga `restart` bering va yangitdan tekshiring hatolik davom etsa ularni tuzatishga harakat qiling.
+
+### 10.  Serverga `nginx` ni o'rnatish (agar o'rnatilmagan bo'lsa).
+1. `nginx` **ni o'rnatish buyruqi**
+   ```bash
+      sudo apt update
+      sudo apt install nginx -y
+   ```
+   > `sudo apt install nginx -y` buyruqdagi `-y` parametrining vazifasi - Bu flag paket o'rnatish jarayonida sistemaga `Ha, hammasini tasdiqlayman` degan buyruq beradi. Agar bu parametrni ishlatmasak `terminal` sizdan tasdiqlash so'raydi:
+   
+   ```ini
+     Do you want to continue? [Y/n] 
+   ```
+2. `nginx` **ni ishga tushirish**
+
+   ```bash
+    sudo systemctl start nginx
+   ```
+3. **`nginx` holatini tekshirish**
+
+   > Agar muvoffaqiyatli o'rnatilgan bo'lsa ` Active: active (running)` degan yozuv chiqadi.
+
+#### `nginx` uchun asosiy konfiguratsiya `fayli` ni sozlash:
+
+   1. **1-qadam: Fayl yaratish**
+      ```bash
+      sudo nano /etc/nginx/sites-available/myproject
+      ```
+      va ushbu faylga quydagi code ni saqlang.
+
+      ```ini
+      server {
+          listen 80;  # 80-portda eshitish
+          server_name example.com www.example.com;  # Domen nomlari
+      
+          # Statik fayllar (CSS, JS, rasmlar)
+          location /static/ {
+              alias /home/user/myproject/staticfiles/;
+          }
+      
+          # Media fayllar (foydalanuvchi yuklagan fayllar)
+          location /media/ {
+              alias /home/user/myproject/media/;
+          }
+      
+          # Barcha boshqa so'rovlar Django ga
+          location / {
+              proxy_pass http://unix:/run/gunicorn.sock;
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+          }
+      }
+      ```
+   2. **2-qadam: Faylni `aktiv` qiling**
+      
+      ```bash
+      sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
+      ```
+   3. **3-qadam: Tekshirish**
+
+      ```bash
+      sudo nginx -t  # Xatolarni tekshirish
+      sudo systemctl restart nginx  # Qayta ishga tushirish
+      ```
+
+**Muhim Qismlar Tushuntirishi**
+
+1. `listen 80`:
+   - `nginx` 80-portda so'rovlarni kutib turadi
+   - `HTTPS` uchun listen `443 ssl` ishlatiladi
+2. `server_name`:
+   - Qaysi domen nomlari uchun ishlashi kerakligi
+   - `example.com` `www.example.com` kabi
+3. `location /static/`:
+   - `http://example.com/static/style.css` so'rovida
+   - Nginx `/home/user/myproject/staticfiles/style.css` faylini qaytaradi
+4. `proxy_pass`:
+   - `Django` so'rovlarni `Gunicorn` ga yuboradi
+   - `unix:/run/gunicorn.sock` - Gunicorn bilan aloqa yo'li
+
+**Virtual serverda nginx ni tekshirish usullari**
+
+1. `nginx` holati:
+   ```bash
+   systemctl status nginx
+   ```
+2. Xatolik loglari:
+   ```bash
+   tail -f /var/log/nginx/error.log
+   ```
+3. Ishlayotgan portlar:
+   ```bash
+   sudo netstat -tulnp | grep nginx
+   ```
+**Eng Ko'p Uchrashadigan Muammolar**
+   1. `403 Forbidden`:
+      - Fayl huquqlarini tekshiring:
+        ```bash
+        sudo chown -R www-data:www-data /home/user/myproject/staticfiles/
+        ```  
+   2. `502 Bad Gateway`:
+      - `Gunicorn` ishlayotganligiga ishonch hosil qiling:
+        ```bash
+        systemctl status gunicorn
+        ```
+   3. `Statik fayllar` **ko'rinmaydi**:
+      - `settings.py` da `STATIC_ROOT` to'g'riligini tekshiring
+      - `python manage.py collectstatic` ni ishga tushiring
+
+**Tayyor Production Sozlamasi**
+
+   ```ini
+   server {
+       listen 80;
+       server_name example.com www.example.com;
+       return 301 https://$host$request_uri;  # HTTP → HTTPS
+   }
+   
+   server {
+       listen 443 ssl;
+       server_name example.com www.example.com;
+       
+       ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+       ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+       
+       location /static/ {
+           alias /home/user/myproject/staticfiles/;
+           expires 365d;
+       }
+       
+       location /media/ {
+           alias /home/user/myproject/media/;
+           expires 365d;
+       }
+       
+       location / {
+           proxy_pass http://unix:/run/gunicorn.sock;
+           proxy_set_header Host $host;
+           proxy_set_header X-Forwarded-Proto $scheme;
+           proxy_redirect off;
+       }
+       
+       client_max_body_size 100M;  # Yuklanadigan fayl hajmi
+   }
+   ```
+   **Xulosa**: `Nginx` sozlamasi asosan 3 qismdan iborat:
+   1. **Qaysi port/domen** eshitishi
+   2. `Statik fayllar` qayerdan olishi
+   3. **Dinamik so'rovlar** ni qayerga yo'naltirishi
+
+
+
+### 12. Docker-based `Django` + `Gunicorn` + `Nginx` Sozlash (Virtual Serverda)
 
 
 #### **1. Dockerfile Yangilash**
@@ -679,6 +842,8 @@ Bu sozlash sizga:
 - ✅ Nginx bilan optimallashtirilgan yuk balansi
 - ✅ PostgreSQL bilan ishlaydigan production-ready tizim
 - ✅ Avtomatik qayta ishga tushirish (restart: unless-stopped)
+
+
 
 
 
