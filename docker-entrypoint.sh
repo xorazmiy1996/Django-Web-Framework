@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 # Kerakli joylarni tayyorlash
 mkdir -p staticfiles && chmod -R 777 staticfiles
