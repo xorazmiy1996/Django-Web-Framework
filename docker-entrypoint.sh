@@ -4,7 +4,7 @@
 mkdir -p staticfiles && chmod -R 777 staticfiles
 
 # Statik fayllarni yig'ish
-python manage.py collectstatic
+python manage.py collectstatic --noinput
 
 # Migratsiyalarni yaratish va qo'llash
 python manage.py makemigrations
