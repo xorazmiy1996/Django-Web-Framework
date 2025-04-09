@@ -17,7 +17,7 @@ services:
       - DATABASE_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DATABASE_HOST=${POSTGRES_HOST}
-      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_PORT=${POSTGRES_PORT}
     volumes:
       - postgres_data:/var/lib/postgresql/data
 volumes:
