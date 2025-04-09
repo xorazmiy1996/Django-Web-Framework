@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-j*1xcix4_)kspj1-r&5thb*6-p%e3qk!urdb+v6q#0=mw1#k+3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [' 185.188.183.243','test-uchun.uz','www.test-uchun.uz']
+ALLOWED_HOSTS = ['185.188.183.243','test-uchun.uz','www.test-uchun.uz']
 
 
 # Application definition
@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'foodie.wsgi.application'
 # .env faylini yuklash
 load_dotenv()
 
-print("Database Name:", os.getenv('DATABASE_NAME'))
+
 
 
 DATABASES = {
@@ -144,7 +144,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
