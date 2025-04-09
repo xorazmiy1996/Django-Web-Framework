@@ -13,10 +13,10 @@ services:
   db:
     image: postgres
     environment:
-      - POSTGRES_DB=${DATABASE_DB}
-      - DATABASE_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - DATABASE_HOST=${DATABASE_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DATABASE_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_HOST=${POSTGRES_HOST}
       - DATABASE_PORT=${DATABASE_PORT}
     volumes:
       - postgres_data:/var/lib/postgresql/data
