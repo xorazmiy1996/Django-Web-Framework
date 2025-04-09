@@ -128,7 +128,7 @@
    ```
 2. **Yangi foydalanuvchini yaratish:**
 
-   > `adduser` yoki `useradd` buyruqlaridan biri yordamida yangi foydalanuvchini yaratishingiz mumkin. adduser ko'proq
+   > `adduser` yoki `useradd` buyruqlaridan biri yordamida yangi foydalanuvchini yaratishingiz mumkin. `adduser` ko'proq
    qulay va o'ziga xos bo'lib, interaktiv tarzda o'zgartirish imkonini beradi.
 
    **Misol uchun:**
