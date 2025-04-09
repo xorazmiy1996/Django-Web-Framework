@@ -104,8 +104,8 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB'),             # Yaratilgan ma'lumotlar bazasi nomi
         'USER': os.getenv('POSTGRES_USER'),           # Yaratilgan foydalanuvchi nomi
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),   # Foydalanuvchining paroli
-        'HOST': os.getenv('POSTGRES_HOST'),           # Agar PostgreSQL lokal serverda bo'lsa
-        'PORT': os.getenv('POSTGRES_PORT','5432'),    # Standart port 5432
+        'HOST': 'db',      # Agar PostgreSQL lokal serverda bo'lsa
+        'PORT': '5432',    # Standart port 5432
     }
 }
 
