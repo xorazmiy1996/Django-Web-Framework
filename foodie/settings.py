@@ -14,10 +14,10 @@ from pathlib import Path
 from urllib.parse import urlparse
 from dotenv import load_dotenv
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-j*1xcix4_)kspj1-r&5thb*6-p%e3qk!urdb+v6q#0=mw1#k+3
 DEBUG = False
 
 ALLOWED_HOSTS = ['185.188.183.243','test-uchun.uz','www.test-uchun.uz']
+
 
 
 # Application definition
@@ -94,10 +95,6 @@ WSGI_APPLICATION = 'foodie.wsgi.application'
 
 # .env faylini yuklash
 load_dotenv()
-
-
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -145,7 +142,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',       # Global static (mavjud bo'lsa)
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
