@@ -86,25 +86,25 @@ WSGI_APPLICATION = 'foodie.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
 
 # .env faylini yuklash
 load_dotenv()
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('POSTGRES_DB'),             # Yaratilgan ma'lumotlar bazasi nomi
-#         'USER': os.getenv('POSTGRES_USER'),           # Yaratilgan foydalanuvchi nomi
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),   # Foydalanuvchining paroli
-#         'HOST': 'db',      # Agar PostgreSQL lokal serverda bo'lsa
-#         'PORT': '5432',    # Standart port 5432
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB'),             # Yaratilgan ma'lumotlar bazasi nomi
+        'USER': os.getenv('POSTGRES_USER'),           # Yaratilgan foydalanuvchi nomi
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),   # Foydalanuvchining paroli
+        'HOST': 'db',      # Agar PostgreSQL lokal serverda bo'lsa
+        'PORT': '5432',    # Standart port 5432
+    }
+}
 
 
 # Password validation
