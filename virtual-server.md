@@ -179,9 +179,7 @@ Agar siz `developer` nomli foydalanuvchini yaratmoqchi bo'lsangiz, quyidagi buyr
    sudo usermod -aG sudo developer  # Agar uni administrator qilishni xohlasangiz
 ```
 
-### 3. `virtual server` ga kiradigan `root foydalanuchisi` bilan va yangi yaratilgan
-
-`yangi_foydalanuvchi` foydalanuvchi o'rtasidagi farqlar ni tushuntirib bering.
+### 3. `virtual server` ga kiradigan `root foydalanuchisi` bilan va yangi yaratilgan`yangi_foydalanuvchi` foydalanuvchi o'rtasidagi farqlar ni tushuntirib bering.
 
 1. `Huquqlar` va `Ruxsatlar`
     - **Root foydalanuvchisi:**
@@ -642,7 +640,7 @@ echo "Container nomi: $CONTAINER_NAME"
    1. **Qaysi port/domen** eshitishi
    2. `Statik fayllar` qayerdan olishi
    3. **Dinamik so'rovlar** ni qayerga yo'naltirishi
-
+> Aytgancha 
 
 
 ### 12. Docker-based `Django` + `Gunicorn` + `Nginx` Sozlash (Virtual Serverda)
@@ -843,10 +841,18 @@ Bu sozlash sizga:
 - ✅ PostgreSQL bilan ishlaydigan production-ready tizim
 - ✅ Avtomatik qayta ishga tushirish (restart: unless-stopped)
 
+### 13. `Virtual server` da nginx o'rnatilmagan bo'lsa `Django` loyihasi ishga tushadimi
 
+> `Django` loyihasini ishga tushirish uchun `Nginx` yoki boshqa veb-server o'rnatilishi shart emas, lekin veb-serverni ishlatmasdan ham `Django` dasturini ishga tushirib, rivojlantirish uchun serverning o'zida ishlatishingiz mumkin.
 
+`Nginx` **ni nima uchun ishlatish kerak?**
 
+1. **Yukni taqsimlash:** `Nginx` sahifalarni tezroq ko'rsatib, yuk taqsimlashi orqali ko'p foydalanuvchilarga xizmat ko'rsatishga yordam beradi.
+2. **Statik fayllarni xizmat ko'rsatish:** `Nginx` statik fayllarni (masalan, `CSS`, `JavaScript`, `rasm`) servis qilish uchun juda samarali va tezdir.
+3. **SSL/Https qo'llab-quvvatlash:** `Nginx` `HTTPS` ni boshqaradi va xavfsizligini ta'minlaydi.
+4. `Reverse` `proxy` imkoniyatlari: `Nginx` ni `Django` dasturiga bog'lab qo'yish orqali yuqori darajada almashtirish va foydalanishni ta'minlaydi.
 
+> Agar siz bemalol rivojlantirish va `test` qilish uchun `Django` ni ishlatmoqchi bo'lsangiz, `Nginx` talab etilmaydi. Lekin, ishlab chiqarish muhitida `Nginx` yoki boshqa veb-serverni qo'llash tavsiya etiladi.
 
 
 

@@ -81,24 +81,67 @@ Nginx (tezroq javob beradi)
 > `Nginx` - bu internetning `ko'prigi` bo'lib, barcha trafikni aqlli boshqaradi. U `Python` ilovalaringiz uchun `tashqi qalqon` vazifasini bajarib, yukni kamaytiradi va tezlikni oshiradi.
 
 
+### 2. `Django` loyihasi uchun `nginx` configuratsiyasini o'rnatish.
 
+1.  **Django Loyihasini Tayyorlash**
 
+> `Django` loyihangizni tayyor bo'lishi kerak. Loyihangizda `gunicorn` yoki `uWSGI` kabi `WSGI` serverini ishlatishingiz kerak. Bu server `Nginx` ga so'rovlarni `Django` ilovangizga yo'naltirish uchun ishlatiladi.
 
+> Agar `gunicorn` o'rnatilmagan bo'lsa, uni o'rnatishingiz kerak. `gunicorn` ni `Dockerfile` ichida o'rnatsa ham bo'ladi
 
+2. **`Gunicorn` ni ishga tushirish**
 
+`Django` loyihangiz joylashgan papkaga kirib, `gunicorn` ni ishga tushiring:
 
+```bash
+  cd /path/to/your/django_project
+  gunicorn --bind 0.0.0.0:8000 your_project_name.wsgi:application
+```
 
+3. **`Nginx` O'rnatilishi**
 
+Agar `Nginx` o'rnatilmagan bo'lsa, quyidagi buyruq bilan o'rnating:
 
+```bash
+  sudo apt update
+  sudo apt install nginx
+```
 
+4. **`Nginx` Konfiguratsiyasini Yaratish**
 
+> `Nginx` konfiguratsiya faylini yaratish uchun quyidagi buyruqlarni bajaring:
 
+1. **Nginx konfiguratsiya faylini yaratish:**
 
+    ```bash
+      sudo nano /etc/nginx/sites-available/your_project_name
+    ```
+2. **Ushbu faylga quyidagilarni joylashtiring:**
 
+    ```ini
+    server {
+        listen 80;
+        server_name your_domain_or_ip;
+    
+        location = /favicon.ico { access_log off; log_not_found off; }
+        location /static/ {
+            root /path/to/your/django_project;
+        }
+    
+        location / {
+            include proxy_params;
+            proxy_pass http://127.0.0.1:8000;  # Gunicorn porti
+        }
+    
+        location /media/ {
+            root /path/to/your/django_project;
+        }
+    }
+    ```
 
-
-
-
+    Ushbu sozlamalar:
+    - `your_domain_or_ip` o'rnida `domen` nomingiz yoki `server IP`-manzilingizni qo'shing.
+    - `/path/to/your/django_project` o'rnida Django loyihangiz joylashgan papka manzilini qo'shing.
 
 
 
