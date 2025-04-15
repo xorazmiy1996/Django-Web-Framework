@@ -161,6 +161,13 @@ Foydalanuvchini sudo guruhiga qo'shish
 > Foydalanuvchi `sudo` guruhiga qo'shilganidan so'ng, foydalanuvchi shartlarni yangilash uchun tizimdan chiqish va qayta
 > kirish kerak bo'lishi mumkin. Shunda foizlar yangi o'zgarishlarga ega bo'ladi.
 
+>Quyidagi buyruq sizga fooydalanuvchining qaysi guruhlarga kirishini ko'rsatadi.
+
+
+```bash
+    groups username
+```
+
 ### 7. `sudo` guruhiga qo'shilagan foydalanuvchilarni  bir-birining accoutiga kirishni oldini olish:
 
 1. `sudoers` **faylini oching:**
