@@ -5,32 +5,47 @@
 <h1 style="text-align: center;">Django-Web-Framework</h1>
 
 ### **Kirish**
+
 Ushbu keng qo'llanma bilan  `Django framwork` ni chuquroq o'rganishingiz mumkin. Oʻrnatishdan tortib to
-joylashtirishgacha bu kurs sizni mustahkam va kengaytiriladigan `veb-ilova` larni yaratish koʻnikmalari bilan taʼminlaydi.
-`Django` ning `Model-View-Shablon` `(MVT`) arxitekturasi, ma’lumotlar bazasi integratsiyasi, foydalanuvchi autentifikatsiyasi
+joylashtirishgacha bu kurs sizni mustahkam va kengaytiriladigan `veb-ilova` larni yaratish koʻnikmalari bilan
+taʼminlaydi.
+`Django` ning `Model-View-Shablon` `(MVT`) arxitekturasi, ma’lumotlar bazasi integratsiyasi, foydalanuvchi
+autentifikatsiyasi
 va boshqalar haqida chuqur tushunchaga ega bo‘ling.
 
-O'rganish davomida `veb-arxitektura`, `Django` xususiyatlari va ishlab chiqish uchun zarur bo'lgan vositalar bilan tanishishdan
+O'rganish davomida `veb-arxitektura`, `Django` xususiyatlari va ishlab chiqish uchun zarur bo'lgan vositalar bilan
+tanishishdan
 boshlang. Loyihani sozlash, qayta foydalanish mumkin shablonlarni yaratish, interaktiv shakllarni yaratish, ma'lumotlar
 bazalarini boshqarish va foydalanuvchi autentifikatsiyasini amalga oshirishni o'z ichiga olgan amaliy misollar orqali
-ko'p narsani o'rganasiz. Shuningdek, siz `Django REST Framework` yordamida `QuerySet API`, sinfga asoslangan ko‘rinishlar va `RESTful` `API`
-ishlab chiqish kabi ilg‘or texnikalarni o‘zlashtirasiz. Ilovangizni `Bootstrap`, <span style="color: yellow;">seans</span> 
+ko'p narsani o'rganasiz. Shuningdek, siz `Django REST Framework` yordamida `QuerySet API`, sinfga asoslangan
+ko‘rinishlar va `RESTful` `API`
+ishlab chiqish kabi ilg‘or texnikalarni o‘zlashtirasiz. Ilovangizni `Bootstrap`, `seans`
 boshqaruvi va qidiruv paneli, sevimli elementlar va interaktiv sharhlar kabi foydalanuvchilarga qulay xususiyatlarni
-yaratish bilan tanishing. Loyihamizning so'ngida, ilovangizni [firstbyte.ru](https://firstbyte.ru/) serverig joylashtiring va u haqiqiy dunyoda foydalanishga tayyor
+yaratish bilan tanishing. Loyihamizning so'ngida, ilovangizni [firstbyte.ru](https://firstbyte.ru/) serverig
+joylashtiring va u haqiqiy dunyoda foydalanishga tayyor
 bo'lishiga ishonch hosil qiling. Har bir qadam tushunchangizni mustahkamlash va sizni real loyihalarga tayyorlash uchun
-amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha sizning dasturlash ko'nikmalaringizni  kengaytirishga intilayotgan backend programislari yoki `Python` ishqibozlari uchun juda mos keladi. Ushbu loyiha
-boshlang'ichdan o'rta darajagacha bo'lgan dasturchilarni ko'nikmalarini yanada mustahkamlash va darajasini oshirish uchun bir qancha yangiliklarni o'z ichiga oladi. 
+amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha sizning dasturlash ko'nikmalaringizni kengaytirishga intilayotgan
+backend programislari yoki `Python` ishqibozlari uchun juda mos keladi. Ushbu loyiha
+boshlang'ichdan o'rta darajagacha bo'lgan dasturchilarni ko'nikmalarini yanada mustahkamlash va darajasini oshirish
+uchun bir qancha yangiliklarni o'z ichiga oladi.
 
 ### **Siz nimani o'rganasiz**
+1. Loyiha [tuzulishi](./project-structure.md) va uning mazmuni
+2. `Paycharm` da `avtocomplate` ni [sozlash](./autocomlate.md) 
+3. `Django` ning `Model-View-Shablon` arxitekturasidan foydalangan holda to'liq stekli veb-ilovalar ni yaratish
+4.  [Django ORM](./orm.md) yordamida ma'lumotlar bazalarini boshqaring va migratsiyalarni boshqaring
+5. `Templates` , `Bootstrap` va dinamik marshrutlash bilan foydalanuvchilar uchun qulay interfeyslarni yaratish
 
-<div style="display: flex;">
-  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #3ef941"></i> <code>Django</code>  ning <code>Model-View-Shablon</code>  arxitekturasidan foydalangan holda to'liq stekli <code>veb-ilovalar</code>  ni yaratish</div>
-  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #3ef941"></i> <code>Django ORM </code> yordamida ma'lumotlar bazalarini boshqaring va migratsiyalarni boshqaring</div>
-</div>
-<div style="display: flex;">
-  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #3ef941"></i> <code>Shablonlar</code> , <code>Bootstrap</code>  va dinamik marshrutlash bilan foydalanuvchilar uchun qulay interfeyslarni yaratish</div>
-  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #3ef941"></i> Haqiqiy hayotda foydalanish uchun <code>Django ilovangizni</code> [firstbyte.ru](https://firstbyte.ru/) joylashtiring</div>
-</div>
+6. `Dockerfile` va `docker-compose.yml` fayllarini yaratish va ularni `Django` loyihasiga qo'shish
+7. `Django` loyihasi da `gunicon` ni [sozlash](./nginx-gunicorn.md)
+8. [Virtual server](./virtual-server.md)  da ishlash uchun aosiy buyruqlar.
+9. `Django` loyihasini `virtual sever` ga joylash ketma ketligi
+10. `Django` loyihasini [production ga tayyorlash ketma - ketligi](./prodoction.md) 
+
+
+
+
+
 
 
 
