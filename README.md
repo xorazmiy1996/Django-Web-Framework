@@ -43,7 +43,16 @@ uchun bir qancha yangiliklarni o'z ichiga oladi.
 10. `Django` loyihasini [production ga tayyorlash ketma - ketligi](./prodoction.md) 
 
 
-### Ushbu [svol-javob](./test.md) orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz 
+### Ushbu [savol-javob](./test.md) orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz 
+
+### Ushbu loyini o'z kopmpyuteringizda ishga tushurish:
+1. **`Git` orqali loyihani yukab oling.**
+2. **Kompyuteringizga `docker` o'rnating.**
+3. **Loyiha asoiy katalogiga kirib quydagi buyruqlarni barjaring:**
+
+**Bu buyruqlar dockerning(**V2**) ikkinchi virsiyasi  uchun:**
+   - `docker compose build`
+   - `docker compose up`
 
 
 
