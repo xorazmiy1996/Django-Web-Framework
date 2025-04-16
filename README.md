@@ -48,7 +48,8 @@ uchun bir qancha yangiliklarni o'z ichiga oladi.
 ### Ushbu loyini o'z kopmpyuteringizda ishga tushurish:
 1. **`Git` orqali loyihani yukab oling.**
 2. **Kompyuteringizga `docker` o'rnating.**
-3. **Loyiha asoiy katalogiga kirib quydagi buyruqlarni barjaring:**
+3. **Loyiha asoiy katalogiga [.env](./.envFileExample).env faylini qo'shing:**
+4. Loyiha asoiy katalogida  quydagi buyruqlarni barjaring
 
 **Bu buyruqlar dockerning(**V2**) ikkinchi virsiyasi  uchun:**
    - `docker compose build`
