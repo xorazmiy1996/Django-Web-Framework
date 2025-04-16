@@ -43,7 +43,7 @@ uchun bir qancha yangiliklarni o'z ichiga oladi.
 10. `Django` loyihasini [production ga tayyorlash ketma - ketligi](./prodoction.md) 
 
 
-### Ushbu [svol-javob](./) orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz 
+### Ushbu [svol-javob](./test.md) orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz 
 
 
 
