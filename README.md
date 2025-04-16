@@ -24,12 +24,12 @@ boshlang'ichdan o'rta darajagacha bo'lgan dasturchilarni ko'nikmalarini yanada m
 ### **Siz nimani o'rganasiz**
 
 <div style="display: flex;">
-  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #63E6BE"></i> <code>Django</code>  ning <code>Model-View-Shablon</code>  arxitekturasidan foydalangan holda to'liq stekli <code>veb-ilovalar</code>  ni yaratish</div>
-  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #63E6BE"></i> <code>Django ORM </code> yordamida ma'lumotlar bazalarini boshqaring va migratsiyalarni boshqaring</div>
+  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #3ef941"></i> <code>Django</code>  ning <code>Model-View-Shablon</code>  arxitekturasidan foydalangan holda to'liq stekli <code>veb-ilovalar</code>  ni yaratish</div>
+  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #3ef941"></i> <code>Django ORM </code> yordamida ma'lumotlar bazalarini boshqaring va migratsiyalarni boshqaring</div>
 </div>
 <div style="display: flex;">
-  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #63E6BE"></i> <code>Shablonlar</code> , <code>Bootstrap</code>  va dinamik marshrutlash bilan foydalanuvchilar uchun qulay interfeyslarni yaratish</div>
-  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #63E6BE"></i> Haqiqiy hayotda foydalanish uchun <code>Django ilovangizni</code> [firstbyte.ru](https://firstbyte.ru/) joylashtiring</div>
+  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #3ef941"></i> <code>Shablonlar</code> , <code>Bootstrap</code>  va dinamik marshrutlash bilan foydalanuvchilar uchun qulay interfeyslarni yaratish</div>
+  <div style="flex: 1; padding: 10px;"><i class="fa-solid fa-square-check" style="color: #3ef941"></i> Haqiqiy hayotda foydalanish uchun <code>Django ilovangizni</code> [firstbyte.ru](https://firstbyte.ru/) joylashtiring</div>
 </div>
 
 
