@@ -92,6 +92,10 @@
     docker compose logs web # Xatoliklarni tekshirish
     ```       
 
+
+### 2. `docker-entrypoint.sh` faylining `line separator` hatoligi ya'ni `docker compose up -d --build` bilan project ishga tushurilganda `docker-entrypoint.sh` ichidagi commandalar bajarilmaydi.
+
+> Bu xatoliklar `docker-entrypoint.sh` faylida qator ajratuvchilari muammosi borligini ko'rsatadi. Windows operatsion tizimida fayllar odatda `CRLF (\r\n)` formatida saqlanadi, bu esa Linux konteynerlarida muammolarga olib kelishi mumkin.
     
 
 

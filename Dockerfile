@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 RUN chmod +x docker-entrypoint.sh  # Faylga bajarish huquqini berish
-ENTRYPOINT  ["sh", "docker-entrypoint.sh"]
+CMD  ["sh", "docker-entrypoint.sh"]
