@@ -7,5 +7,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-RUN chmod +x docker-entrypoint.sh  # Faylga bajarish huquqini berish
-CMD  ["sh", "docker-entrypoint.sh"]
+
+CMD python manage.py collectstatic --no-input && \
+    python manage.py migrate && \
+    exec gunicorn --bind 0.0.0.0:8000 foodie.wsgi:application

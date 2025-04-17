@@ -93,11 +93,26 @@
     ```       
 
 
-### 2. `docker-entrypoint.sh` faylining `line separator` hatoligi ya'ni `docker compose up -d --build` bilan project ishga tushurilganda `docker-entrypoint.sh` ichidagi commandalar bajarilmaydi.
+### 2. windows operatsion tizimida docker-compose yordamica ishga tushuriladigan django loliyhasida quydagicha hatolik bo'lishi mumkin:
+
+```ini
+usage: manage.py collectstatic [-h] [--noinput] [--no-post-process]
+web-1  |                                [-i PATTERN] [-n] [-c] [-l]
+web-1  |                                [--no-default-ignore] [--version]
+web-1  |                                [-v {0,1,2,3}] [--settings SETTINGS]
+web-1  |                                [--pythonpath PYTHONPATH] [--traceback]
+web-1  |                                [--no-color] [--force-color] [--skip-checks]
+web-1  | manage.py collectstatic: error: unrecognized arguments: --no-input
+
+
+Unknown command: 'migrate\r'. Did you mean migrate?
+web-1  | Type 'manage.py help' for usage.
+```
+> `docker-entrypoint.sh` faylining `line separator` hatoligi ya'ni `docker compose up -d --build` bilan project ishga tushurilganda `docker-entrypoint.sh` ichidagi commandalar bajarilmaydi.
 
 > Bu xatoliklar `docker-entrypoint.sh` faylida qator ajratuvchilari muammosi borligini ko'rsatadi. Windows operatsion tizimida fayllar odatda `CRLF (\r\n)` formatida saqlanadi, bu esa Linux konteynerlarida muammolarga olib kelishi mumkin.
     
-
+> Yuqoridagi hatoni oldini olish ya'ni o'rnatilyotgan project joriy operatsion tizimga bog'liqligini oldini olish uchun `docker-entrypoint.sh` ishlatmaslik kerak buning o'rniga Dockerfile ichidagi `CMD` ichiga yozish kerak.
 
 
 
