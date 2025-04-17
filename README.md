@@ -61,7 +61,7 @@ uchun bir qancha yangiliklarni o'z ichiga oladi.
 **Bu buyruq dockerning `V2` ikkinchi virsiyasi  uchun:**
    - `docker compose up -d --build`
  
-### [Ushbu loyihani ishlab chiqish jarayonida duch kelgan hatoliklar](./error.md)
+### [Ushbu loyihani ishlab chiqish jarayonida duch kelingan muommolar](./error.md)
 
 
 Veb ilovamizga tashrif buyuring: [foodie](http://test-uchun.uz:5000/)
