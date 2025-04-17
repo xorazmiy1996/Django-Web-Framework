@@ -64,7 +64,7 @@ uchun bir qancha yangiliklarni o'z ichiga oladi.
 ### [Ushbu loyihani ishlab chiqish jarayonida duch kelgan hatoliklar](./error.md)
 
 
-Veb ilovamizga tashrif buyuring: [foodie](http://test-uchun.uz)
+Veb ilovamizga tashrif buyuring: [foodie](http://test-uchun.uz:5000/)
 
 
 
