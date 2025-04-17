@@ -18,7 +18,7 @@
 ### **Kirish**
 
 Ushbu keng qo'llanma bilan  `Django framwork` ni chuquroq o'rganishingiz mumkin. Loyihani ishlab chiqishdan  tortib to
-serverga joylashtirishgacha bo'lgan dasturlash koʻnikmalari bilan  taʼminlaydi.
+`server` ga joylashtirishgacha bo'lgan dasturlash koʻnikmalari bilan  taʼminlaydi.
 `Django` ning `Model-View-Shablon` `(MVT`) arxitekturasi, ma’lumotlar bazasi `integratsiyasi`, foydalanuvchi
 `autentifikatsiyasi`va boshqa narsalar haqida chuqur tushunchaga ega bo‘ling.
 
@@ -64,6 +64,7 @@ uchun bir qancha yangiliklarni o'z ichiga oladi.
 ### [Ushbu loyihani ishlab chiqish jarayonida duch kelgan hatoliklar](./error.md)
 
 
+Veb ilovamizga tashrif buyuring: [foodie](http://test-uchun.uz)
 
 
 
