@@ -2,30 +2,37 @@
 
 
 
-<h1 style="text-align: center;">Django-Web-Framework</h1>
+### Django-Web-Framework
+<table>
+  <tr>
+    <td><img src="static/images/my_image.jpg" style="border-radius: 50%;" alt="Rasm" width="300"/></td>
+    <td>
+      <h3>Ibragimov Muhammad</h3>
+       <ul>
+         <li>Ushbu loyihani  <code>Django framework</code> ini  o'rganishni istaydigan  dastruchilar uchun tavsiya etaman.</li>
+      </ul> 
+    </td>
+  </tr>
+</table>
 
 ### **Kirish**
 
-Ushbu keng qo'llanma bilan  `Django framwork` ni chuquroq o'rganishingiz mumkin. Oʻrnatishdan tortib to
-joylashtirishgacha bu kurs sizni mustahkam va kengaytiriladigan `veb-ilova` larni yaratish koʻnikmalari bilan
-taʼminlaydi.
-`Django` ning `Model-View-Shablon` `(MVT`) arxitekturasi, ma’lumotlar bazasi integratsiyasi, foydalanuvchi
-autentifikatsiyasi
-va boshqalar haqida chuqur tushunchaga ega bo‘ling.
+Ushbu keng qo'llanma bilan  `Django framwork` ni chuquroq o'rganishingiz mumkin. Loyihani ishlab chiqishdan  tortib to
+serverga joylashtirishgacha bo'lgan dasturlash koʻnikmalari bilan  taʼminlaydi.
+`Django` ning `Model-View-Shablon` `(MVT`) arxitekturasi, ma’lumotlar bazasi `integratsiyasi`, foydalanuvchi
+`autentifikatsiyasi`va boshqa narsalar haqida chuqur tushunchaga ega bo‘ling.
 
 O'rganish davomida `veb-arxitektura`, `Django` xususiyatlari va ishlab chiqish uchun zarur bo'lgan vositalar bilan
-tanishishdan
-boshlang. Loyihani sozlash, qayta foydalanish mumkin shablonlarni yaratish, interaktiv shakllarni yaratish, ma'lumotlar
+tanishasiz. Loyihani sozlash, qayta foydalanish mumkin shablonlarni yaratish, interaktiv shakllarni yaratish, ma'lumotlar
 bazalarini boshqarish va foydalanuvchi autentifikatsiyasini amalga oshirishni o'z ichiga olgan amaliy misollar orqali
-ko'p narsani o'rganasiz. Shuningdek, siz `Django REST Framework` yordamida `QuerySet API`, sinfga asoslangan
+ko'p narsani o'rganasiz. Shuningdek, siz `Django REST Framework` yordamida `QuerySet API`, `class` ga asoslangan
 ko‘rinishlar va `RESTful` `API`
 ishlab chiqish kabi ilg‘or texnikalarni o‘zlashtirasiz. Ilovangizni `Bootstrap`, `seans`
 boshqaruvi va qidiruv paneli, sevimli elementlar va interaktiv sharhlar kabi foydalanuvchilarga qulay xususiyatlarni
 yaratish bilan tanishing. Loyihamizning so'ngida, ilovangizni [firstbyte.ru](https://firstbyte.ru/) serverig
 joylashtiring va u haqiqiy dunyoda foydalanishga tayyor
 bo'lishiga ishonch hosil qiling. Har bir qadam tushunchangizni mustahkamlash va sizni real loyihalarga tayyorlash uchun
-amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha sizning dasturlash ko'nikmalaringizni kengaytirishga intilayotgan
-backend programislari yoki `Python` ishqibozlari uchun juda mos keladi. Ushbu loyiha
+amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha sizning dasturlash ko'nikmalaringizni kengaytirish uchun juda mos keladi. Ushbu loyiha
 boshlang'ichdan o'rta darajagacha bo'lgan dasturchilarni ko'nikmalarini yanada mustahkamlash va darajasini oshirish
 uchun bir qancha yangiliklarni o'z ichiga oladi.
 
@@ -43,18 +50,18 @@ uchun bir qancha yangiliklarni o'z ichiga oladi.
 10. [Django loyihasini production ga tayyorlash ketma - ketligi](./prodoction.md) 
 
 
-### Ushbu [savol-javob](./test.md) orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz 
+### [Ushbu savol-javob orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz](./test.md) 
 
-### Ushbu loyini o'z kopmpyuteringizda ishga tushurish:
+### Ushbu loyihangizni o'z kopmpyuteringizda ishga tushurish:
 1. **`Git` orqali loyihani yukab oling.**
 2. **Kompyuteringizga `docker` o'rnating.**
-3. **Loyiha asoiy katalogiga [.env](./.envFileExample) faylini qo'shing:**
+3. **[Loyiha asoiy katalogiga .env faylini qo'shing:](./.envFileExample)**
 4. Loyiha asoiy katalogida  quydagi buyruqlarni barjaring
 
-**Bu buyruqlar dockerning(**V2**) ikkinchi virsiyasi  uchun:**
-   - `docker compose build`
-   - `docker compose up`
-
+**Bu buyruq dockerning `V2` ikkinchi virsiyasi  uchun:**
+   - `docker compose up -d --build`
+ 
+### [Ushbu loyihani ishlab chiqish jarayonida duch kelgan hatoliklar](./error.md)
 
 
 
