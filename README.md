@@ -30,17 +30,17 @@ boshlang'ichdan o'rta darajagacha bo'lgan dasturchilarni ko'nikmalarini yanada m
 uchun bir qancha yangiliklarni o'z ichiga oladi.
 
 ### **Siz nimani o'rganasiz**
-1. Loyiha [tuzulishi](./project-structure.md) va uning mazmuni
-2. `Paycharm` da `avtocomplate` ni [sozlash](./autocomlate.md) 
+1. [Loyiha tuzulishi va uning mazmuni](./project-structure.md)
+2. [Paycharm da avtocomplate ni sozlash](./autocomlate.md) 
 3. `Django` ning `Model-View-Shablon` arxitekturasidan foydalangan holda to'liq stekli veb-ilovalar ni yaratish
-4.  [Django ORM](./orm.md) yordamida ma'lumotlar bazalarini boshqaring va migratsiyalarni boshqaring
+4.  [Django ORM yordamida ma'lumotlar bazalarini boshqaring va migratsiyalarni boshqaring](./orm.md)
 5. `Templates` , `Bootstrap` va dinamik marshrutlash bilan foydalanuvchilar uchun qulay interfeyslarni yaratish
 
 6. `Dockerfile` va `docker-compose.yml` fayllarini yaratish va ularni `Django` loyihasiga qo'shish
-7. `Django` loyihasi da `gunicon` ni [sozlash](./nginx-gunicorn.md)
-8. [Virtual server](./virtual-server.md)  da ishlash uchun aosiy buyruqlar.
+7. [Django loyihasi da gunicon ni sozlash](./nginx-gunicorn.md)
+8. [Virtual server da ishlash uchun aosiy buyruqlar.](./virtual-server.md)
 9. `Django` loyihasini `virtual sever` ga joylash ketma ketligi
-10. `Django` loyihasini [production ga tayyorlash ketma - ketligi](./prodoction.md) 
+10. [Django loyihasini production ga tayyorlash ketma - ketligi](./prodoction.md) 
 
 
 ### Ushbu [savol-javob](./test.md) orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz 
