@@ -7,8 +7,6 @@
 python manage.py collectstatic --no-input
 
 # Migratsiyalarni yaratish va qo'llash
-python manage.py makemigrations
-
 python manage.py migrate
 
 # Gunicorn orqali Django ilovasini ishga tushirish
