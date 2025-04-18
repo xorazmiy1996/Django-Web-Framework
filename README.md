@@ -27,7 +27,7 @@ tanishasiz. Loyihani sozlash, qayta foydalanish mumkin shablonlarni yaratish, in
 bazalarini boshqarish va foydalanuvchi autentifikatsiyasini amalga oshirishni o'z ichiga olgan amaliy misollar orqali
 ko'p narsani o'rganasiz. Shuningdek, siz `Django REST Framework` yordamida `QuerySet API`, `class` ga asoslangan
 ko‘rinishlar va `RESTful` `API`
-ishlab chiqish kabi ilg‘or texnikalarni o‘zlashtirasiz. Ilovangizni `Bootstrap`, `seans`
+ishlab chiqish kabi ilg‘or texnologiyalarni o‘zlashtirasiz. Ilovangizni `Bootstrap`, `seans`
 boshqaruvi va qidiruv paneli, sevimli elementlar va interaktiv sharhlar kabi foydalanuvchilarga qulay xususiyatlarni
 yaratish bilan tanishing. Loyihamizning so'ngida, ilovangizni [firstbyte.ru](https://firstbyte.ru/) serveriga
 joylashtiring va bu ilovani istalgan `browser`da ishlashiga ishonch hosil qiling. Har bir qadam tushunchangizni mustahkamlash va sizni real loyihalarga tayyorlash uchun
