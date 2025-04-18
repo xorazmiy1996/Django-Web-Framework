@@ -49,8 +49,8 @@ amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha  dasturlashda `Full stack devel
 
 ### [Ushbu savol-javob orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz](./test.md) 
 
-### Ushbu loyihangizni o'z kompyuteringizda ishga tushirish:
-1. **`Git` orqali loyihani yukab oling.**
+### Ushbu loyihani o'z kompyuteringizda ishga tushirish:
+1. **`Git` orqali loyihani yuklab oling.**
 2. **Kompyuteringizga `docker` o'rnating.**
 3. **[Loyiha asosiy katalogiga .env faylini qo'shing:](./.envFileExample)**
 4. Loyiha asoiy katalogida  quydagi buyruqlarni barjaring
