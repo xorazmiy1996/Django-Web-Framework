@@ -49,7 +49,7 @@ amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha  dasturlashda `Full stack devel
 
 ### [Ushbu savol-javob orqali loyihamizda ishlatilgan code bo'yicha tushunchalarimizni yaxshilaymiz](./test.md) 
 
-### Ushbu loyihangizni o'z kompyuteringizda ishga tushurish:
+### Ushbu loyihangizni o'z kompyuteringizda ishga tushirish:
 1. **`Git` orqali loyihani yukab oling.**
 2. **Kompyuteringizga `docker` o'rnating.**
 3. **[Loyiha asosiy katalogiga .env faylini qo'shing:](./.envFileExample)**
