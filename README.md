@@ -34,7 +34,7 @@ joylashtiring va bu ilovani istalgan `browser`da ishlashiga ishonch hosil qiling
 amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha  dasturlashda `Full stack developer` ko'nikmalaringizni oshirishga  juda mos keladi.
 
 ### **Siz nimani o'rganasiz**
-1. [Loyiha tuzulishi va uning mazmuni](./project-structure.md)
+1. [Loyiha tuzilishi va uning mazmuni](./project-structure.md)
 2. [Paycharm da avtocomplate ni sozlash](./autocomlate.md) 
 3. `Django` ning `Model-View-Shablon` arxitekturasidan foydalangan holda to'liq stekli veb-ilovalar ni yaratish
 4.  [Django ORM yordamida ma'lumotlar bazalarini boshqaring va migratsiyalarni boshqaring](./orm.md)
@@ -52,7 +52,7 @@ amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha  dasturlashda `Full stack devel
 ### Ushbu loyihangizni o'z kopmpyuteringizda ishga tushurish:
 1. **`Git` orqali loyihani yukab oling.**
 2. **Kompyuteringizga `docker` o'rnating.**
-3. **[Loyiha asoiy katalogiga .env faylini qo'shing:](./.envFileExample)**
+3. **[Loyiha asosiy katalogiga .env faylini qo'shing:](./.envFileExample)**
 4. Loyiha asoiy katalogida  quydagi buyruqlarni barjaring
 
 **Bu buyruq dockerning `V2` ikkinchi virsiyasi  uchun:**
