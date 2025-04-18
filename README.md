@@ -53,7 +53,7 @@ amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha  dasturlashda `Full stack devel
 1. **`Git` orqali loyihani yuklab oling.**
 2. **Kompyuteringizga `docker` o'rnating.**
 3. **[Loyiha asosiy katalogiga .env faylini qo'shing:](./.envFileExample)**
-4. Loyiha asosiy katalogida  quydagi buyruqlarni barjaring
+4. Loyiha asosiy katalogida  quydagi buyruqlarni bajaring
 
 **Bu buyruq dockerning `V2` ikkinchi virsiyasi  uchun:**
    - `docker compose up -d --build`
