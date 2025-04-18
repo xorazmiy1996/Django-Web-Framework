@@ -55,7 +55,7 @@ amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha  dasturlashda `Full stack devel
 3. **[Loyiha asosiy katalogiga .env faylini qo'shing:](./.envFileExample)**
 4. Loyiha asosiy katalogida  quydagi buyruqlarni bajaring
 
-**Bu buyruq dockerning `V2` ikkinchi virsiyasi  uchun:**
+**Bu buyruq dockerning `V2` ikkinchi versiyasi  uchun:**
    - `docker compose up -d --build`
  
 ### [Ushbu loyihani ishlab chiqish jarayonida duch kelingan muommolar](./error.md)
