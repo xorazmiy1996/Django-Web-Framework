@@ -29,12 +29,9 @@ ko'p narsani o'rganasiz. Shuningdek, siz `Django REST Framework` yordamida `Quer
 ko‘rinishlar va `RESTful` `API`
 ishlab chiqish kabi ilg‘or texnikalarni o‘zlashtirasiz. Ilovangizni `Bootstrap`, `seans`
 boshqaruvi va qidiruv paneli, sevimli elementlar va interaktiv sharhlar kabi foydalanuvchilarga qulay xususiyatlarni
-yaratish bilan tanishing. Loyihamizning so'ngida, ilovangizni [firstbyte.ru](https://firstbyte.ru/) serverig
-joylashtiring va u haqiqiy dunyoda foydalanishga tayyor
-bo'lishiga ishonch hosil qiling. Har bir qadam tushunchangizni mustahkamlash va sizni real loyihalarga tayyorlash uchun
-amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha sizning dasturlash ko'nikmalaringizni kengaytirish uchun juda mos keladi. Ushbu loyiha
-boshlang'ichdan o'rta darajagacha bo'lgan dasturchilarni ko'nikmalarini yanada mustahkamlash va darajasini oshirish
-uchun bir qancha yangiliklarni o'z ichiga oladi.
+yaratish bilan tanishing. Loyihamizning so'ngida, ilovangizni [firstbyte.ru](https://firstbyte.ru/) serveriga
+joylashtiring va bu ilovani istalgan `browser`da ishlashiga ishonch hosil qiling. Har bir qadam tushunchangizni mustahkamlash va sizni real loyihalarga tayyorlash uchun
+amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha  dasturlashda `Full stack developer` ko'nikmalaringizni oshirishga  juda mos keladi.
 
 ### **Siz nimani o'rganasiz**
 1. [Loyiha tuzulishi va uning mazmuni](./project-structure.md)
@@ -65,12 +62,6 @@ uchun bir qancha yangiliklarni o'z ichiga oladi.
 
 
 Veb ilovamizga tashrif buyuring: [foodie](http://test-uchun.uz:5000/)
-
-
-
-
-
-
 
 
 
