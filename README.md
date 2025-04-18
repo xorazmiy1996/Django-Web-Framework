@@ -43,7 +43,7 @@ amaliy qadamlarni o'z ichiga oladi. Ushbu loyiha  dasturlashda `Full stack devel
 6. `Dockerfile` va `docker-compose.yml` fayllarini yaratish va ularni `Django` loyihasiga qo'shish
 7. [Django loyihasi da gunicon ni sozlash](./nginx-gunicorn.md)
 8. [Virtual server da ishlash uchun aosiy buyruqlar.](./virtual-server.md)
-9. `Django` loyihasini `virtual sever` ga joylash ketma ketligi
+9. `Django` loyihasini `virtual server` ga joylash ketma ketligi
 10. [Django loyihasini production ga tayyorlash ketma - ketligi](./prodoction.md) 
 
 
