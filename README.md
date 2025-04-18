@@ -17,7 +17,7 @@
 
 ### **Kirish**
 
-Ushbu keng qo'llanma bilan  `Django framwork` ni chuquroq o'rganishingiz mumkin. Loyihani ishlab chiqishdan  tortib to
+Ushbu keng qo'llanma bilan  `Django framwork` ni chuqurroq o'rganishingiz mumkin. Loyihani ishlab chiqishdan  tortib to
 `server` ga joylashtirishgacha bo'lgan dasturlash koʻnikmalari bilan  taʼminlaydi.
 `Django` ning `Model-View-Shablon` `(MVT`) arxitekturasi, ma’lumotlar bazasi `integratsiyasi`, foydalanuvchi
 `autentifikatsiyasi`va boshqa narsalar haqida chuqur tushunchaga ega bo‘ling.
